@@ -1,4 +1,3 @@
-import { PublicProgramComponent } from './../public-program/public-program.component';
 import { GridComponent } from './../special/grid/grid.component';
 import { LoginComponent } from './../login/login.component';
 import { EmploymentFormComponent } from './../ui/forms/employment-form/employment-form.component';
@@ -49,8 +48,6 @@ import { RouterModule } from '@angular/router';
     RouterModule.forRoot([
       { path: 'genlist/:id', component: GenListComponent, canActivate: [AuthGuard] },
       { path: '', component: LoginComponent },
-      { path: 'public-program', component: PublicProgramComponent },
-      { path: 'public-program/:id', component: PublicProgramComponent },
       { path: 'home', component: ProcbarComponent, canActivate: [AuthGuard] },
       { path: 'form/post/:id/:action', component: PostFormComponent, canActivate: [AuthGuard] },
       { path: 'form/post', component: PostFormComponent, canActivate: [AuthGuard] },
