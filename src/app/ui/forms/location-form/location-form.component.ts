@@ -1,3 +1,4 @@
+import { BasicValidators } from './../../../shared/basicValidators';
 import { Partner } from './../../../shared/sdk/models/Partner';
 import { Location as LocationModel } from './../../../shared/sdk/models/Location';
 import { Location } from '@angular/common';
@@ -37,7 +38,8 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
       id: [''],
       name: ['', Validators.required],
       address: [''],
-      partnerId: []
+      partnerId: [],
+      email: ['', Validators.compose([BasicValidators.email])],
     });
 
     this.prepareLabels(this._labelService);
@@ -59,9 +61,7 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
         .subscribe(
         res => {
           this.form.markAsPristine();
-        },
-        error => console.log(error),
-        () => this.back()
+        }, this.errMethod, () => this.back()
         );
     }
 
@@ -71,7 +71,7 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
   selectData(param) {
 
     // get partner values
-    this._pApi.find({ order: "name" }).subscribe(res => {
+    this._pApi.find({ order: 'name' }).subscribe(res => {
       this.partnerItems = [];
       for (let one of res)
         this.partnerItems.push({ id: (<Partner>one).id, text: (<Partner>one).name });
@@ -81,8 +81,9 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
       this._api.findById(param.id)
         .subscribe(res => {
           this.data = res;
+          this.data.email = this.data.email ? this.data.email : '';
           let loc = <LocationModel>res;
-          this.partnerSel =  loc.partnerId ? this.fromId(this.partnerItems, loc.partnerId) : '';
+          this.partnerSel = loc.partnerId ? this.fromId(this.partnerItems, loc.partnerId) : '';
           (<FormGroup>this.form)
             .setValue(this.data, { onlySelf: true });
         });
@@ -94,9 +95,7 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
 
     this._api.deleteById(model.id)
       .subscribe(
-      null,
-      error => console.log(error),
-      () => this.back()
+      null, this.errMethod, () => this.back()
       );
 
   }
@@ -105,10 +104,10 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
     this._location.back();
   }
 
-  //method for select boxes
+  // method for select boxes
   public selected(value: any, type: string): void {
 
-    if (type == "partner")
+    if (type === 'partner')
       this.partnerSel = [{ id: value.id, text: value.text }];
 
     this.form.markAsDirty();

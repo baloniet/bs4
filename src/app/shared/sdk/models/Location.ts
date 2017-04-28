@@ -6,6 +6,7 @@ export interface LocationInterface {
   name: string;
   partnerId: number;
   address?: string;
+  email?: string;
 }
 
 export class Location implements LocationInterface {
@@ -13,6 +14,7 @@ export class Location implements LocationInterface {
   name: string;
   partnerId: number;
   address: string;
+  email: string;
   constructor(data?: LocationInterface) {
     Object.assign(this, data);
   }
@@ -58,6 +60,10 @@ export class Location implements LocationInterface {
         },
         address: {
           name: 'address',
+          type: 'string'
+        },
+        email: {
+          name: 'email',
           type: 'string'
         },
       },

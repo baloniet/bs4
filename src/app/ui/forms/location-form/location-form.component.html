@@ -1,50 +1,59 @@
 <div class="container">
-  <div class="card">
-    <!-- Default panel contents -->
-    <div class="card-header">
+	<div class="card">
+		<!-- Default panel contents -->
+		<div class="card-header">
 
-      <!-- Form title -->
-      <form-title [param]="param" [formTitles]="formTitles" [isDelete]="isDelete()">
-      </form-title>
-    </div>
+			<!-- Form title -->
+			<form-title [param]="param" [formTitles]="formTitles" [isDelete]="isDelete()">
+			</form-title>
+		</div>
 
-    <div class="card-block">
-      <form [formGroup]="form">
-        <fieldset>
+		<div class="card-block">
+			<form [formGroup]="form">
+				<fieldset>
 
-          <!-- Text input-->
-          <div class="form-group row">
-            <label class="col-form-label col-md-2" for="name">{{formLabels?.name?.name}}</label>
-            <div class="col-md-3">
-              <input formControlName="name" type="text" placeholder="{{formLabels?.name?.placeholder}}" class="form-control">
-              <small *ngIf="!isDelete" class="form-text text-muted">{{formLabels?.name?.help}}</small>
-            </div>
+					<!-- Text input-->
+					<div class="form-group row">
+						<label class="col-form-label col-md-2" for="name">{{formLabels?.name?.name}}</label>
+						<div class="col-md-3">
+							<input formControlName="name" type="text" placeholder="{{formLabels?.name?.placeholder}}" class="form-control">
+							<small *ngIf="!isDelete" class="form-text text-muted">{{formLabels?.name?.help}}</small>
+						</div>
 
-            <!-- Text input-->
-            <label class="col-md-2 col-form-label" for="partner">{{formLabels?.partner?.name}}</label>
-            <div class="col-md-4">
-              <ng-select [allowClear]="true" [items]="partnerItems" [active]="partnerSel" (data)="refreshValue($event,'partner')" placeholder="{{formLabels?.partner?.placeholder}}"
-                (selected)="selected($event,'partner')">
-              </ng-select>
-            </div>
+						<!-- Text input-->
+						<label class="col-md-2 col-form-label" for="partner">{{formLabels?.partner?.name}}</label>
+						<div class="col-md-4">
+							<ng-select [allowClear]="true" [items]="partnerItems" [active]="partnerSel" (data)="refreshValue($event,'partner')" placeholder="{{formLabels?.partner?.placeholder}}"
+							    (selected)="selected($event,'partner')">
+							</ng-select>
+						</div>
 
-          </div>
+					</div>
 
-          <div class="form-group row">
-            <label class="col-form-label col-md-2" for="address">{{formLabels?.address?.name}}</label>
-            <div class="col-md-7">
-              <input formControlName="address" type="text" placeholder="{{formLabels?.address?.placeholder}}" class="form-control">
-              <small *ngIf="!isDelete" class="form-text text-muted">{{formLabels?.address?.help}}</small>
-            </div>
-          </div>
+					<div class="form-group row">
+						<label class="col-form-label col-md-2" for="address">{{formLabels?.address?.name}}</label>
+						<div class="col-md-7">
+							<input formControlName="address" type="text" placeholder="{{formLabels?.address?.placeholder}}" class="form-control">
+							<small *ngIf="!isDelete" class="form-text text-muted">{{formLabels?.address?.help}}</small>
+						</div>
+					</div>
 
-          <!-- Form buttons -->
-          <form-button [form]="form" [formTitles]="formTitles" [isDelete]="isDelete()" (onBack)="back()" (onSave)="save(form.value)"
-            (onDelete)="delete(form.value)">
-          </form-button>
+					<div class="form-group row">
+						<label class="col-md-2 col-form-label" for="email">{{formLabels?.email?.name}}</label>
+						<div class="col-md-5">
+							<input formControlName="email" type="text" placeholder="{{formLabels?.email?.placeholder}}" class="form-control">
+							<small *ngIf="!isDelete" class="form-text text-muted">{{formLabels?.email?.help}}</small>
+							<div *ngIf="form.controls.email.hasError('email') && form.controls.email.touched" class="text-warning">{{formTitles?.email}}</div>
+						</div>
 
-        </fieldset>
-      </form>
-    </div>
-  </div>
+					</div>
+
+					<!-- Form buttons -->
+					<form-button [form]="form" [formTitles]="formTitles" [isDelete]="isDelete()" (onBack)="back()" (onSave)="save(form.value)" (onDelete)="delete(form.value)">
+					</form-button>
+
+				</fieldset>
+			</form>
+		</div>
+	</div>
 </div>

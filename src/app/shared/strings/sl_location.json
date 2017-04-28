@@ -1,42 +1,47 @@
 {
-  "name": "Lokacija vključitve",
-  "route": "location",
-  "newRecordRoute": "/form/location",
-  "properties": {
-    "id": {
-      "name": "#",
-      "disabled": true
-    },
-    "name": {
-      "name": "Naziv lokacije",
-      "length": 300,
-      "placeholder": "naziv",
-      "help": "Vnesi naziv lokacije, naziv še ne sme obstajati.",
-      "link": true
-    },
-    "partner": {
-      "name": "Projektni partner"
-    },
-    "pname": {
-      "name": "Projektni partner"
-    },
+	"name": "Lokacija vključitve",
+	"route": "location",
+	"newRecordRoute": "/form/location",
+	"properties": {
+		"id": {
+			"name": "#",
+			"disabled": true
+		},
+		"name": {
+			"name": "Naziv lokacije",
+			"length": 300,
+			"placeholder": "naziv",
+			"help": "Vnesi naziv lokacije, naziv še ne sme obstajati.",
+			"link": true
+		},
+		"partner": {
+			"name": "Projektni partner"
+		},
+		"pname": {
+			"name": "Projektni partner"
+		},
 		"address": {
 			"name": "Naslov",
 			"length": 300,
 			"placeholder": "naslov",
 			"help": "Vnesi naslov lokacije."
+		},
+		"email": {
+			"name": "e-pošta",
+			"placeholder": "naslov@gmail.com"
 		}
-  },
-  "titles": {
-    "genlist": "Urejanje šifranta lokacij",
-    "formNew": "Vnos nove lokacije",
-    "formUpdate": "Urejanje lokacij",
-    "formDelete": "Ali res želite izbrisati podatke o lokaciji?",
-    "save": "Shrani",
-    "cancel": "Prekliči",
-    "delete": "Izbriši",
-    "searchString": "Vnesi naziv..."
-  },
-   "searchFields": ["name"],
-   "genlist": ["id","name","pname"]
+	},
+	"titles": {
+		"genlist": "Urejanje šifranta lokacij",
+		"formNew": "Vnos nove lokacije",
+		"formUpdate": "Urejanje lokacij",
+		"formDelete": "Ali res želite izbrisati podatke o lokaciji?",
+		"save": "Shrani",
+		"cancel": "Prekliči",
+		"delete": "Izbriši",
+		"searchString": "Vnesi naziv...",
+		"email": "Elektronski naslov ni pravilen!"
+	},
+	"searchFields": ["name"],
+	"genlist": ["id", "name", "pname"]
 }
