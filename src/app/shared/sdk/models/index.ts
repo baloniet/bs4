@@ -62,5 +62,6 @@ export * from './VStatVisit';
 export * from './VPerson';
 export * from './VStatPlanMonth';
 export * from './VStatPlan';
+export * from './Register';
 export * from './BaseModels';
 
