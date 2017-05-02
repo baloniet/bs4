@@ -39,7 +39,7 @@ export class LocationFormComponent extends BaseFormComponent implements OnInit {
       name: ['', Validators.required],
       address: [''],
       partnerId: [],
-      email: ['', Validators.compose([BasicValidators.email])],
+      email: ['', Validators.compose([BasicValidators.email])]
     });
 
     this.prepareLabels(this._labelService);
