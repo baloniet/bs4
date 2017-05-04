@@ -11,7 +11,7 @@ import { ActivityApi } from './../../../shared/sdk/services/custom/Activity';
 import { EventApi } from './../../../shared/sdk/services/custom/Event';
 import { RoomApi } from './../../../shared/sdk/services/custom/Room';
 import { BaseFormComponent } from '../baseForm.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
@@ -59,6 +59,8 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
     off = 0;
     dates;
     datesidx;
+
+    @ViewChild('t') ngbTabSet;
 
     constructor(
         private _labelService: LabelService,
@@ -159,6 +161,7 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
 
         // if update find Event
         if (param.action === 'u' || param.action === 'b') {
+
             this._api.findById(param.id)
                 .subscribe(res => {
                     this.data = res;
@@ -195,6 +198,7 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
     // custom methods for this class
 
     private prepareActivityData4Form(actId, evt?) {
+        this.ngbTabSet.select('event');
         // get selected activity 
         Observable.forkJoin(
             this._actApi.findById(actId),
@@ -206,8 +210,10 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
                 if (act.locationId) {
                     this.prepareRooms(act.locationId, evt);
                     this._locApi.findById(act.locationId)
-                        .subscribe(res2 => this.location = res2,
-                        this.errMethod);
+                        .subscribe(
+                        res2 => this.location = res2,
+                        this.errMethod
+                        );
                 }
             },
             this.errMethod);
@@ -271,16 +277,17 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
         let etime = (<DateFormatter>this._formatter).momentDTL(model.startdate, model.endtime, false);
         let eventId = this.data.id ? this.data.id : 0;
 
-        this._roomApi.isRoomFree(this.form.value.roomId, stime, etime, eventId)
-            .subscribe(
-            res => {
-                let msg = res[0];
-                if (msg.free === 0 && this.updatedForm)
-                    this.setError('roomNotFree');
-                this.updatedForm = true;
-            },
-            this.errMethod
-            );
+        if (this.form.value.roomId)
+            this._roomApi.isRoomFree(this.form.value.roomId, stime, etime, eventId)
+                .subscribe(
+                res => {
+                    let msg = res[0];
+                    if (msg.free === 0 && this.updatedForm)
+                        this.setError('roomNotFree');
+                    this.updatedForm = true;
+                },
+                this.errMethod
+                );
 
     }
 
@@ -475,8 +482,9 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
                 date: moment(start).format('DD.MM.YYYY'),
                 day: moment(start).format('dddd'),
                 d: parseInt(moment(start).format('DD')),
-                wday: moment(start).day(), full: start
+                wday: moment(start).day(), full: moment(start)
             });
+
         this.datesidx.push(parseInt(moment(start).format('DD')));
 
         for (let i = 1; i < end; i++) {

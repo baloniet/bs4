@@ -9,8 +9,8 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
-    "meksis": "ng build -prod && tar -czvf ../les/dist.tar.gz dist && rm -rf dist",
-    "meksis-test": "ng build --environment=test && tar -czvf ../les/disttest.tar.gz dist && rm -rf dist"
+    "vgccrm": "ng build -prod && mv dist client && tar -czvf ../les/client.tar.gz client && rm -rf client",
+    "vgccrm-test": "ng build --environment=test && mv dist client && tar -czvf ../les/client-test.tar.gz client && rm -rf client"
   },
   "private": true,
   "dependencies": {
