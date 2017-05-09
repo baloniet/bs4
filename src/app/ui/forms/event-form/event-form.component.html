@@ -156,7 +156,7 @@
 						</div>
 					</template>
 				</ngb-tab>
-				<ngb-tab [disabled]="!form.value.id || form.value.meventId">
+				<ngb-tab id="repeats" [disabled]="!form.value.id || form.value.meventId">
 					<template ngbTabTitle>Urejanje <b>ponovitev</b></template>
 					<template ngbTabContent>
 						<div class="card-block">
@@ -218,7 +218,7 @@
 						</div>
 					</template>
 				</ngb-tab>
-				<ngb-tab [disabled]="!form.value.id || form.value.meventId">
+				<ngb-tab id="manrepeats" [disabled]="!form.value.id || form.value.meventId">
 					<template ngbTabTitle>Ročno urejanje <b>ponovitev</b></template>
 					<template ngbTabContent>
 						<div class="card-block">
@@ -268,7 +268,7 @@
 						</div>
 					</template>
 				</ngb-tab>
-				<ngb-tab [disabled]="!form.value.id" title="Brisanje">
+				<ngb-tab id="delets" [disabled]="!form.value.id" title="Brisanje">
 					<template ngbTabContent>
 						<div class="card-block">
 

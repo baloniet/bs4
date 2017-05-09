@@ -1,3 +1,4 @@
+import { SelectItem } from './../../ng2-select/select/select-item';
 import { VEvent } from './../../../shared/sdk/models/VEvent';
 import { LocationApi } from './../../../shared/sdk/services/custom/Location';
 import { Room } from './../../../shared/sdk/models/Room';
@@ -11,7 +12,7 @@ import { ActivityApi } from './../../../shared/sdk/services/custom/Activity';
 import { EventApi } from './../../../shared/sdk/services/custom/Event';
 import { RoomApi } from './../../../shared/sdk/services/custom/Room';
 import { BaseFormComponent } from '../baseForm.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
@@ -28,7 +29,7 @@ let moment = require('../../../../assets/js/moment.min.js');
     styleUrls: ['./event-form.component.css'],
     providers: [LabelService]
 })
-export class EventFormComponent extends BaseFormComponent implements OnInit {
+export class EventFormComponent extends BaseFormComponent implements OnInit, AfterViewInit {
 
     private updatedForm: boolean;
     private data;
@@ -59,6 +60,7 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
     off = 0;
     dates;
     datesidx;
+    selectEventTab = false;
 
     @ViewChild('t') ngbTabSet;
 
@@ -76,6 +78,13 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
         private _eapi: VEventApi
     ) {
         super('event');
+    }
+
+    ngAfterViewInit() {
+        if (this.selectEventTab) {
+            this.ngbTabSet.select('event');
+            this.selectEventTab = false;
+        }
     }
 
     ngOnInit() {
@@ -198,7 +207,10 @@ export class EventFormComponent extends BaseFormComponent implements OnInit {
     // custom methods for this class
 
     private prepareActivityData4Form(actId, evt?) {
-        this.ngbTabSet.select('event');
+        this.selectEventTab = true;
+        if (this.ngbTabSet && this.ngbTabSet.activeId) {
+            this.ngbTabSet.select('event');
+        }
         // get selected activity 
         Observable.forkJoin(
             this._actApi.findById(actId),
