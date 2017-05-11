@@ -21,6 +21,7 @@ export interface VEventInterface {
   isacc?: number;
   isoff?: number;
   locationId?: number;
+  isrented?: number;
 }
 
 export class VEvent implements VEventInterface {
@@ -43,6 +44,7 @@ export class VEvent implements VEventInterface {
   isacc: number;
   isoff: number;
   locationId: number;
+  isrented: number;
   constructor(data?: VEventInterface) {
     Object.assign(this, data);
   }
@@ -148,6 +150,10 @@ export class VEvent implements VEventInterface {
         },
         locationId: {
           name: 'locationId',
+          type: 'number'
+        },
+        isrented: {
+          name: 'isrented',
           type: 'number'
         },
       },
