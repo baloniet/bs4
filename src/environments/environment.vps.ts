@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   title: 'production',
-  BASE_API_URL : 'http://212.44.104.170:20030'
+  BASE_API_URL : 'https://vgccrm.vgcgoriske.si:20030'
 };
