@@ -7,7 +7,8 @@
 				{{dateNow}} <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> {{dateSeven}}
 			</div>
 			<div class="card-block">
-				&nbsp;<span class="text-success fa-2x">{{stat?.cntP}} <i class="fa fa-user"></i> </span>
+				&nbsp;
+				<span class="text-success fa-2x">{{stat?.cntP}} <i class="fa fa-user"></i> </span>
 				<span class="text-primary fa-2x">{{stat?.cntE}} <i class="fa fa-calendar-minus-o"></i> </span>
 				<span class="text-warning fa-2x">{{stat?.cntR}} <i class="fa fa-university"></i> </span>
 			</div>
@@ -32,13 +33,13 @@
 						<i class="fa fa-calendar"></i>
             		</button-->
 					<!--div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1"-->
-					<a [routerLink]="['/schedule/month']">Mesečni pregled</a> 
-					<a [routerLink]="['/schedule/agendaWeek']">Tedenski pregled</a> 
-					<a [routerLink]="['/schedule/agendaDay']">Danes</a> 
+					<a [routerLink]="['/schedule/month']">Mesečni pregled</a>
+					<a [routerLink]="['/schedule/agendaWeek']">Tedenski pregled</a>
+					<a [routerLink]="['/schedule/agendaDay']">Danes</a>
 					<div class="dropdown-divider"></div>
-					<a [routerLink]="['/form/activity']">Vnos aktivnosti</a> 
-					<a [routerLink]="['/genlist/activity']">Pregled aktivnosti</a> 
-					<a [routerLink]="['/program']">Program</a> 
+					<a [routerLink]="['/form/activity']">Vnos aktivnosti</a>
+					<a [routerLink]="['/genlist/activity']">Pregled aktivnosti</a>
+					<a [routerLink]="['/program']">Program</a>
 					<!--/div-->
 				</div>
 			</div>
@@ -107,8 +108,9 @@
 						<i class="fa fa-pie-chart"></i>
            			 </button-->
 					<!--div class="dropdown-menu" aria-labelledby="btnGroupDrop4"-->
-						<a [routerLink]="['/stat']">Statistika</a>
-						<!--a class="dropdown-item" href="#">Another action</a>
+					<a [routerLink]="['/stat']">Statistika</a>
+					<a [routerLink]="['/export']">Izvozi</a>
+					<!--a class="dropdown-item" href="#">Another action</a>
 						<a class="dropdown-item" href="#">Something else here</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#">Separated link</a>

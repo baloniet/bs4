@@ -1,3 +1,4 @@
+import { ExportComponent } from './../special/export/export.component';
 import { GridComponent } from './../special/grid/grid.component';
 import { LoginComponent } from './../login/login.component';
 import { EmploymentFormComponent } from './../ui/forms/employment-form/employment-form.component';
@@ -107,7 +108,8 @@ import { RouterModule } from '@angular/router';
       { path: 'grid', component: GridComponent, canActivate: [AuthGuard] },
       { path: 'stat', component: StatComponent, canActivate: [AuthGuard] },
       { path: 'report', component: ReportComponent, canActivate: [AuthGuard] },
-      { path: 'veport', component: ReportComponent, canActivate: [AuthGuard] }
+      { path: 'veport', component: ReportComponent, canActivate: [AuthGuard] },
+      { path: 'export', component: ExportComponent, canActivate: [AuthGuard] }
     ])
   ],
   exports: [

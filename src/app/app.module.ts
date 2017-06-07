@@ -67,6 +67,7 @@ import { ActStatComponent } from './act-stat/act-stat.component';
 import { EmploymentFormComponent } from './ui/forms/employment-form/employment-form.component';
 import { LoginComponent } from './login/login.component';
 import { GridComponent } from './special/grid/grid.component';
+import { ExportComponent } from './special/export/export.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,7 @@ import { GridComponent } from './special/grid/grid.component';
     TemplateComponent, ReportComponent, SettingFormComponent, ProjectFormComponent, StatementComponent, PartnerFormComponent,
     KindFormComponent, LocationFormComponent, TypeFormComponent, ProgramComponent, CheckoutFormComponent, StatComponent,
     MemberStatComponent, RoomStatComponent, TeachStatComponent, UserFormComponent, ActStatComponent, EmploymentFormComponent,
-    LoginComponent, GridComponent
+    LoginComponent, GridComponent, ExportComponent
   ],
   imports: [
     BrowserModule,
