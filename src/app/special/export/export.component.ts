@@ -4,7 +4,7 @@ import { VPersonApi } from './../../shared/sdk/services/custom/VPerson';
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 let FileSaver = require('file-saver');
-
+let moment = require('../../../assets/js/moment.min.js');
 
 @Component({
   selector: 'app-export',
@@ -16,6 +16,8 @@ export class ExportComponent implements OnInit {
 
   keys = [];
   keysToggle;
+
+  rowDataIndex = [];
 
   constructor(
     private _apiPerson: VPersonApi,
@@ -60,6 +62,7 @@ export class ExportComponent implements OnInit {
     for (let i = 0; i < this.keysToggle[idx].length; i++) {
       if (this.keysToggle[idx][i].selected) {
         rowData.push(this.keysToggle[idx][i].title);
+        this.rowDataIndex.push(i);
       }
     }
     out.push(rowData); // write header
@@ -77,10 +80,10 @@ export class ExportComponent implements OnInit {
 
     const sheetName = 'Podatki';
     wb.SheetNames.push(sheetName);
-    wb.Sheets[sheetName] = this.sheet_from_array_of_arrays(out);
+    wb.Sheets[sheetName] = this.sheet_from_array_of_arrays(out, idx);
 
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' }); // bookSST: true,
-    FileSaver.saveAs(new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' }), filename + '.xlsx', { cellDates: true });
+    FileSaver.saveAs(new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' }), filename + '.xlsx');
   }
 
 
@@ -94,10 +97,12 @@ export class ExportComponent implements OnInit {
     return buf;
   }
 
-  sheet_from_array_of_arrays(data: any, opts?: any): any {
+  sheet_from_array_of_arrays(data: any, idx: number, opts?: any): any {
     const sheet: any = {};
 
     let wscols = [];
+
+    idx = idx * 2;
 
     for (let i = 0; i < data[0].length; i++) {
       wscols.push({ wch: 20 });
@@ -123,11 +128,22 @@ export class ExportComponent implements OnInit {
           continue;
         }
         if (typeof cell.v === 'number') {
-          cell.t = 'n';
+          if (this.keys[idx][this.rowDataIndex[col]].indexOf('sex') > -1 && row > 0) {
+            cell.t = 's';
+            if (cell.v === 0) cell.v = 'Ž'; else cell.v = 'M';
+          } else
+            cell.t = 'n';
         } else if (typeof cell.v === 'boolean') {
           cell.t = 'b';
         } else {
-          cell.t = 's';
+          if (this.keys[idx][this.rowDataIndex[col]].indexOf('date') > -1 && row > 0) {
+            cell.t = 's';
+            cell.v = moment(cell.v).format('D. M. Y');
+          } else if (this.keys[idx][this.rowDataIndex[col]].indexOf('time') > -1 && row > 0) {
+            cell.t = 's';
+            cell.v = moment(cell.v).format('D.M.Y HH.mm');
+          } else
+            cell.t = 's';
         }
 
 
@@ -146,7 +162,7 @@ export class ExportComponent implements OnInit {
   clicked(idx) {
 
     if (idx === 0) {
-      this._apiPerson.find({ where: { ismember: true }, order: 'lastName, firstName' })
+      this._apiPerson.find({ where: { ismember: true, firstname: 'Marko' }, order: 'lastName, firstName' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'uporabniki', 0);
