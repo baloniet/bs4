@@ -162,7 +162,7 @@ export class ExportComponent implements OnInit {
   clicked(idx) {
 
     if (idx === 0) {
-      this._apiPerson.find({ where: { ismember: true, firstname: 'Marko' }, order: 'lastName, firstName' })
+      this._apiPerson.find({ where: { ismember: true }, order: 'lastName, firstName' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'uporabniki', 0);
