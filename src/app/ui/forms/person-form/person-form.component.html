@@ -13,6 +13,7 @@
 			<!-- Form title -->
 			<form-title [param]="param" [formTitles]="formTitles" [isDelete]="isDelete()">
 			</form-title>
+			<h5 class="text-danger" *ngIf="!myData">Oseba je prijavljena na drugi lokaciji!</h5>
 			<div class="pull-right">
 				<span [routerLink]="['/genlist/person']" class="text-muted clickable">
 					&nbsp;<i class="fa fa-th-list" aria-hidden="true"></i> {{formLabels?.people?.name}}

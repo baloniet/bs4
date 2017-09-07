@@ -62,6 +62,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   full = false;
   stmtError = true;
   isNew = false;
+  myData = false;
 
   constructor(
     private _labelService: LabelService,
@@ -416,12 +417,12 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
             }, this.errMethod);
 
           for (let st of res) {
-            if (this.getUserLocationsIds().indexOf(st.locationId) > -1) {
+            if (this.getUserLocationsIds().indexOf(st.locationId) === -1 ) this.myData = false; else this.myData = true;
+            if ((this.getUserLocationsIds().indexOf(st.locationId) > -1) || (this.isUserAdmin())) {
               this.prepareFullData(param);
               break;
-            }
-            else
-              this.prepareLessData(param);
+            } else
+             this.prepareLessData(param);
           }
         }, this.errMethod);
     } else
