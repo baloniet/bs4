@@ -2,7 +2,6 @@
 
   <div class="card">
 
-    <!-- Default panel contents -->
     <div class="card-header">
       <!-- Form title -->
       <form-title [param]="param" [formTitles]="formTitles" [isDelete]="isDelete()">
@@ -51,7 +50,7 @@
 
           </div>
 
-          <!-- Theme-->
+          <!-- user -->
           <div class="row">
             <label *ngIf="!user" class="col-md-4 col-form-label" for="theme">{{formLabels?.name?.name}}</label>
             <div class="col-md-8" *ngIf="!user">

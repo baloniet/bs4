@@ -25,6 +25,10 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
   private options = [];
   private opts = [];
 
+  paginatorPageSize = 10;
+  paginatorLCount = 0;
+  paginatorInitPage = 1;
+
   constructor(
     private _labelService: LabelService,
     private _location: Location,
@@ -57,7 +61,8 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
       isadmin: false,
       active: false,
       birthdate: [],
-      sex: []
+      sex: [],
+      content: []
     });
 
     this.prepareLabels(this._labelService);
@@ -74,10 +79,11 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
     if (!this.form.pristine) {
 
       let id;
-      if (this.userSel[0] && this.userSel[0].id)
+      if (this.userSel[0] && this.userSel[0].id) {
         id = this.userSel[0].id;
-      else
+      } else {
         id = this.user.auth0Id;
+      }
       // 1. save model - leuser
       if (id)
         this._api.find({ where: { auth0Id: id } })
@@ -113,13 +119,13 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
 
           this.data = res[0];
 
-          //user
+          // user
           this.userItems = [];
           for (let one of res[1]) {
             this.userItems.push({ id: (<LeUser>one).auth0Id, text: (<LeUser>one).name });
           }
 
-          //load user data
+          // load user data
           this.user = <LeUser>res[2][0];
           if (this.user) {
             this.data.isadmin = this.user.isadmin;
@@ -139,7 +145,7 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
             .setValue(this.data, { onlySelf: true });
 
         }, error => {
-          console.log(error, 0)
+          console.log(error, 0);
         }
         );
     }
@@ -149,14 +155,14 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
     let c = [];
     for (let k of locations) {
       for (let tk of plocs) {
-        if (tk.locationId == k.id) {
+        if (tk.locationId === k.id) {
           this.opts.push({ id: tk.id, personId: tk.personId, locationId: tk.locationId, name: k.name });
           c.push(k.id);
         }
       }
     }
     for (let k of locations)
-      if (c.indexOf(k.id) == -1)
+      if (c.indexOf(k.id) === -1)
         this.opts.push({ id: null, personId: null, locationId: k.id, name: k.name });
     this.paginatorLCount = this.opts.length;
     this.findLocation(1);
@@ -174,17 +180,13 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
 
   }
 
-  //method for select boxes
+  // method for select boxes
   public selected(value: any, type: string): void {
-    if (type == "user") {
+    if (type === 'user') {
       this.userSel = [{ id: value.id, text: value.text }];
     }
     this.form.markAsDirty();
   }
-
-  paginatorPageSize = 10;
-  paginatorLCount = 0;
-  paginatorInitPage = 1;
 
   findLocation(page: number) {
     let start = this.paginatorPageSize * (page - 1);
@@ -202,7 +204,7 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
   removeLocation(o) {
     o.personId = this.data.id;
     this._pLocApi.deleteById(o.id)
-      .subscribe(null, err => console.log(err), () => { o.id = null });
+      .subscribe(null, err => console.log(err), () => { o.id = null; });
   }
 
 }
