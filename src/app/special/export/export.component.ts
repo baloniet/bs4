@@ -19,6 +19,7 @@ export class ExportComponent implements OnInit {
   keysToggle;
 
   rowDataIndex = [];
+  months = ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij', 'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'];
 
   constructor(
     private _apiPerson: VPersonApi,
@@ -36,7 +37,8 @@ export class ExportComponent implements OnInit {
     this.keys.push(['#', 'Začetek', 'Konec', 'Naziv', 'Soba', 'Vsebina', 'Opis aktivnosti', 'Aktivnost', '# registriranih', '# potrjenih', '# odjavljenih']);
 
     this.keys.push(['id', 'partnerName', 'locationName', 'kindName', 'year', 'month', 'sumt', 'sump']);
-    this.keys.push(['#', 'partnerName', 'locationName', 'kindName', 'year', 'month', '# ur', '# udeležencev']);
+    this.keys.push(['#', 'Partner', 'Lokacija', 'Vsebina', 'Leto', 'Mesec', '# ur', '# udeležencev']);
+    this.keys.push([null, null, null, null, null, null, 0, 0]);
 
     this.keysToggle = [[], [], []];
 
@@ -63,37 +65,81 @@ export class ExportComponent implements OnInit {
   // Example code from https://github.com/SheetJS/js-xlsx/issues/526
   // Thank you: https://github.com/junaidinam
 
-  saveExcel(param: any, filename: string, idx: number) {
+  saveExcel(param: any, filename: string, idx: number, split?: boolean) {
     const wb = new Workbook();
 
-    const out = new Array;
+    let out = new Array;
 
     let rowData = new Array;
 
-    // print header
-    for (let i = 0; i < this.keysToggle[idx].length; i++) {
-      if (this.keysToggle[idx][i].selected) {
-        rowData.push(this.keysToggle[idx][i].title);
-        this.rowDataIndex.push(i);
-      }
-    }
-    out.push(rowData); // write header
+    if (!split) { // FIXME: split is intentionaly made for report number three, should be generalized
 
-    // print data
-    param.forEach(function (row, index) {
-      rowData = [];
+      // print header
       for (let i = 0; i < this.keysToggle[idx].length; i++) {
         if (this.keysToggle[idx][i].selected) {
-          rowData.push(row[this.keysToggle[idx][i].key]);
+          rowData.push(this.keysToggle[idx][i].title);
+          this.rowDataIndex.push(i);
         }
       }
-      out.push(rowData);
-    }, this);
+      out.push(rowData); // write header
 
-    const sheetName = 'Podatki';
-    wb.SheetNames.push(sheetName);
-    wb.Sheets[sheetName] = this.sheet_from_array_of_arrays(out, idx);
+      // print data
+      param.forEach(function (row, index) {
+        rowData = [];
+        for (let i = 0; i < this.keysToggle[idx].length; i++) {
+          if (this.keysToggle[idx][i].selected) {
+            rowData.push(row[this.keysToggle[idx][i].key]);
+          }
+        }
+        out.push(rowData);
+      }, this);
 
+      let sheetName = 'Podatki';
+      wb.SheetNames.push(sheetName);
+      wb.Sheets[sheetName] = this.sheet_from_array_of_arrays(out, idx);
+    } else {
+      for (let m = 1; m < 13; m++) {
+
+        out = [];
+        rowData = [];
+        this.keys[6] = [null, null, null, null, null, null, 0, 0];
+        // print header
+        for (let i = 0; i < this.keysToggle[idx].length; i++) {
+          if (this.keysToggle[idx][i].selected) {
+            rowData.push(this.keysToggle[idx][i].title);
+            if (m === 1) this.rowDataIndex.push(i);
+          }
+        }
+        out.push(rowData); // write header
+
+        // print data
+        param.forEach(function (row, index) {
+          if (row['month'] === m) {
+            rowData = [];
+            for (let i = 0; i < this.keysToggle[idx].length; i++) {
+              if (this.keysToggle[idx][i].selected) {
+                rowData.push(row[this.keysToggle[idx][i].key]);
+              }
+            }
+            out.push(rowData);
+            this.keys[6][6] += row['sumt'];
+            this.keys[6][7] += row['sump'];
+          }
+        }, this);
+
+        rowData = [];
+        for (let i = 0; i < this.keys[6].length; i++) {
+          if (this.keysToggle[idx][i].selected) {
+            rowData.push(this.keys[6][i]);
+          }
+        }
+        out.push(rowData);
+
+        let sheetName = this.months[m - 1];
+        wb.SheetNames.push(sheetName);
+        wb.Sheets[sheetName] = this.sheet_from_array_of_arrays(out, idx);
+      }
+    }
     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' }); // bookSST: true,
     FileSaver.saveAs(new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' }), filename + '.xlsx');
   }
@@ -109,7 +155,7 @@ export class ExportComponent implements OnInit {
     return buf;
   }
 
-  sheet_from_array_of_arrays(data: any, idx: number, opts?: any): any {
+  sheet_from_array_of_arrays(data: any, idx: number): any {
     const sheet: any = {};
 
     let wscols = [];
@@ -124,7 +170,11 @@ export class ExportComponent implements OnInit {
     const endCell = { c: 0, r: 0 };
 
     const range = { s: startCell, e: endCell };
+    let sheetRow = -1;
+
     for (let row = 0; row !== data.length; ++row) {
+      sheetRow++;
+
       for (let col = 0; col !== data[row].length; ++col) {
         // prepare actual range
         if (range.s.r > row) { range.s.r = row; }
@@ -133,9 +183,11 @@ export class ExportComponent implements OnInit {
         if (range.e.c < col) { range.e.c = col; }
 
         const cell: any = {};
+        let cell_ref;
         cell.v = data[row][col];
-        const cell_ref = XLSX.utils.encode_cell({ c: col, r: row });
-        // console.log(cell_ref);
+
+        cell_ref = XLSX.utils.encode_cell({ c: col, r: sheetRow });
+
         if (cell.v == null) {
           continue;
         }
@@ -158,10 +210,7 @@ export class ExportComponent implements OnInit {
             cell.t = 's';
         }
 
-
-        // console.log(cell);
         sheet[cell_ref] = cell;
-        // console.log(ws);
       }
     }
     if (range.s.c < 10000000) {
@@ -186,10 +235,10 @@ export class ExportComponent implements OnInit {
           this.saveExcel(this.data, 'dogodki', 1);
         });
     } else if (idx === 2) {
-      this._apiPlanFE.find({order: 'year,month,kindName'})
+      this._apiPlanFE.find({ where: { partnerId: 1 }, order: 'year,month,kindName' })
         .subscribe(res => {
           this.data = res;
-          this.saveExcel(this.data, 'obiski', 2);
+          this.saveExcel(this.data, 'obiski', 2, true);
         });
     }
 

@@ -4,23 +4,23 @@ declare var Object: any;
 export interface VStatFullExportInterface {
   year: number;
   month?: number;
-  sumt?: string;
-  sump?: number;
   kindName: string;
   locationName: string;
   partnerName: string;
   id: number;
+  sumt?: number;
+  sump?: number;
 }
 
 export class VStatFullExport implements VStatFullExportInterface {
   year: number;
   month: number;
-  sumt: string;
-  sump: number;
   kindName: string;
   locationName: string;
   partnerName: string;
   id: number;
+  sumt: number;
+  sump: number;
   constructor(data?: VStatFullExportInterface) {
     Object.assign(this, data);
   }
@@ -60,14 +60,6 @@ export class VStatFullExport implements VStatFullExportInterface {
           name: 'month',
           type: 'number'
         },
-        sumt: {
-          name: 'sumt',
-          type: 'string'
-        },
-        sump: {
-          name: 'sump',
-          type: 'number'
-        },
         kindName: {
           name: 'kindName',
           type: 'string'
@@ -82,6 +74,14 @@ export class VStatFullExport implements VStatFullExportInterface {
         },
         id: {
           name: 'id',
+          type: 'number'
+        },
+        sumt: {
+          name: 'sumt',
+          type: 'number'
+        },
+        sump: {
+          name: 'sump',
           type: 'number'
         },
       },
