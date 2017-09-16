@@ -64,5 +64,6 @@ export * from './VStatPlanMonth';
 export * from './VStatPlan';
 export * from './Register';
 export * from './VStatFull';
+export * from './VStatFullExport';
 export * from './SDKModels';
 export * from './logger.service';

@@ -1,6 +1,7 @@
 import { VFeventApi } from './../../shared/sdk/services/custom/VFevent';
 import { LabelService } from './../../services/label.service';
 import { VPersonApi } from './../../shared/sdk/services/custom/VPerson';
+import { VStatFullExportApi } from './../../shared/sdk/services/custom/VStatFullExport';
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 let FileSaver = require('file-saver');
@@ -22,6 +23,7 @@ export class ExportComponent implements OnInit {
   constructor(
     private _apiPerson: VPersonApi,
     private _apiEvent: VFeventApi,
+    private _apiPlanFE: VStatFullExportApi,
     private _labelService: LabelService
   ) { }
 
@@ -33,7 +35,10 @@ export class ExportComponent implements OnInit {
     this.keys.push(['id', 'starttime', 'endtime', 'name', 'rname', 'content', 'acontent', 'aname', 'preg', 'prega', 'prego']);
     this.keys.push(['#', 'Začetek', 'Konec', 'Naziv', 'Soba', 'Vsebina', 'Opis aktivnosti', 'Aktivnost', '# registriranih', '# potrjenih', '# odjavljenih']);
 
-    this.keysToggle = [[], []];
+    this.keys.push(['id', 'projectId', 'partnerId', 'locationId', 'themeId', 'kindId', 'year', 'month', 'sumtime', 'sumperson']);
+    this.keys.push(['#', 'projectId', 'partnerId', 'locationId', 'themeId', 'kindId', 'year', 'month', '# ur', '# udeležencev']);
+
+    this.keysToggle = [[], [], []];
 
     for (let i = 0; i < this.keys[0].length; i++) {
       this.keysToggle[0].push({ key: this.keys[0][i], selected: true, title: this.keys[1][i] });
@@ -46,6 +51,13 @@ export class ExportComponent implements OnInit {
     }
     // de-select id
     this.keysToggle[1][0].selected = false;
+
+    for (let i = 0; i < this.keys[4].length; i++) {
+      this.keysToggle[2].push({ key: this.keys[4][i], selected: true, title: this.keys[5][i] });
+    }
+    // de-select id
+    this.keysToggle[2][0].selected = false;
+
   }
 
   // Example code from https://github.com/SheetJS/js-xlsx/issues/526
@@ -172,6 +184,12 @@ export class ExportComponent implements OnInit {
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'dogodki', 1);
+        });
+    } else if (idx === 2) {
+      this._apiPlanFE.find()
+        .subscribe(res => {
+          this.data = res;
+          this.saveExcel(this.data, 'obiski', 2);
         });
     }
 

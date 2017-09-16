@@ -22,6 +22,15 @@
         				  <i class="fa fa-floppy-o"></i> Shrani
      			   </button>
 			<hr>
+			<b>Podatki o obiskanosti in realizaciji</b><br>
+			<span *ngFor="let key of keysToggle[2]; let i = index" (click)="toggle(2,i)">
+				<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
+				<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
+			</span>
+			<button class="btn btn-info btn-sm hidden-print" (click)="clicked(2); false">  
+        				  <i class="fa fa-floppy-o"></i> Shrani
+     			   </button>
+			<hr>
 		</div>
 
 	</div>

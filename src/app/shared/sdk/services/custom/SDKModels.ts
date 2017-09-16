@@ -65,6 +65,7 @@ import { VStatPlanMonth } from '../../models/VStatPlanMonth';
 import { VStatPlan } from '../../models/VStatPlan';
 import { Register } from '../../models/Register';
 import { VStatFull } from '../../models/VStatFull';
+import { VStatFullExport } from '../../models/VStatFullExport';
 
 @Injectable()
 export class SDKModels {
@@ -135,6 +136,7 @@ export class SDKModels {
     VStatPlan: VStatPlan,
     Register: Register,
     VStatFull: VStatFull,
+    VStatFullExport: VStatFullExport,
     
   };
 

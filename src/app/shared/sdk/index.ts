@@ -108,6 +108,7 @@ import { VStatPlanMonthApi } from './services/custom/VStatPlanMonth';
 import { VStatPlanApi } from './services/custom/VStatPlan';
 import { RegisterApi } from './services/custom/Register';
 import { VStatFullApi } from './services/custom/VStatFull';
+import { VStatFullExportApi } from './services/custom/VStatFullExport';
 /**
 * @module SDKBrowserModule
 * @description
@@ -199,6 +200,7 @@ export class SDKBrowserModule {
         VStatPlanApi,
         RegisterApi,
         VStatFullApi,
+        VStatFullExportApi,
         { provide: InternalStorage, useClass: CookieBrowser }
       ]
     };

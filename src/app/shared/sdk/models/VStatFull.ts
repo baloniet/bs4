@@ -11,7 +11,7 @@ export interface VStatFullInterface {
   month?: number;
   sumtime?: string;
   sumperson: number;
-  id?: number;
+  id: number;
 }
 
 export class VStatFull implements VStatFullInterface {
