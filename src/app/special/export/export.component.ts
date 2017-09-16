@@ -35,8 +35,8 @@ export class ExportComponent implements OnInit {
     this.keys.push(['id', 'starttime', 'endtime', 'name', 'rname', 'content', 'acontent', 'aname', 'preg', 'prega', 'prego']);
     this.keys.push(['#', 'Začetek', 'Konec', 'Naziv', 'Soba', 'Vsebina', 'Opis aktivnosti', 'Aktivnost', '# registriranih', '# potrjenih', '# odjavljenih']);
 
-    this.keys.push(['id', 'projectId', 'partnerId', 'locationId', 'themeId', 'kindId', 'year', 'month', 'sumtime', 'sumperson']);
-    this.keys.push(['#', 'projectId', 'partnerId', 'locationId', 'themeId', 'kindId', 'year', 'month', '# ur', '# udeležencev']);
+    this.keys.push(['id', 'partnerName', 'locationName', 'kindName', 'year', 'month', 'sumt', 'sump']);
+    this.keys.push(['#', 'partnerName', 'locationName', 'kindName', 'year', 'month', '# ur', '# udeležencev']);
 
     this.keysToggle = [[], [], []];
 
@@ -186,7 +186,7 @@ export class ExportComponent implements OnInit {
           this.saveExcel(this.data, 'dogodki', 1);
         });
     } else if (idx === 2) {
-      this._apiPlanFE.find()
+      this._apiPlanFE.find({order: 'year,month,kindName'})
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'obiski', 2);
