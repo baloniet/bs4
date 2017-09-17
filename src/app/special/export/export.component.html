@@ -3,35 +3,70 @@
 		<div class="card-header">
 			<h4 class="card-title">Izvoz podatkov</h4>
 		</div>
-		<div class="card-block">
-			<b>Podatki o uporabnikih</b><br>
-			<span *ngFor="let key of keysToggle[0]; let i = index" (click)="toggle(0,i)">
-				<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
-				<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
-			</span>
-			<button class="btn btn-info btn-sm hidden-print" (click)="clicked(0); false">  
-        				  <i class="fa fa-floppy-o"></i> Shrani
-     			   </button>
-			<hr>
-			<b>Podatki o dogodkih</b><br>
-			<span *ngFor="let key of keysToggle[1]; let i = index" (click)="toggle(1,i)">
-				<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
-				<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
-			</span>
-			<button class="btn btn-info btn-sm hidden-print" (click)="clicked(1); false">  
-        				  <i class="fa fa-floppy-o"></i> Shrani
-     			   </button>
-			<hr>
-			<b>Podatki o obiskanosti in realizaciji</b><br>
-			<span *ngFor="let key of keysToggle[2]; let i = index" (click)="toggle(2,i)">
-				<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
-				<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
-			</span>
-			<button class="btn btn-info btn-sm hidden-print" (click)="clicked(2); false">  
-        				  <i class="fa fa-floppy-o"></i> Shrani
-     			   </button>
-			<hr>
-		</div>
+		<div>
 
+			<div class="card-block col-md-4">
+				<div class="form-group row">
+					<label class="col-md-3 col-form-label" for="rType">{{formTitles?.year}}</label>
+					<div class="col-md-4">
+						<ng-select [allowClear]="true" [items]="yearItems" [active]="yearSel" (selected)="selected($event,'year')">
+						</ng-select>
+					</div>
+				</div>
+				<ngb-tabset>
+					<ngb-tab>
+						<template ngbTabTitle>{{formTitles?.partners}}</template>
+						<template ngbTabContent>
+							<i class="fa fa-square-o clickable" (click)="reset('partners',false);"></i>
+							<i class="fa fa-check-square-o clickable" (click)="reset('partners',true);"></i>
+							<table class="table table-hover table-sm ">
+								<tbody>
+									<tr *ngFor="let c of choicesP">
+										<td>
+											<label class="form-check-inline">
+												&nbsp;
+												<input type="checkbox" class="form-check-input pull-left" [checked]="exists(c?.id,'partners')" (click)="toggle(c,'partners');"> {{c.name}}
+												<br></label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</template>
+					</ngb-tab>
+				</ngb-tabset>
+			</div>
+
+			<div class="col-md-8">
+				<div class="card-block">
+					<b>Podatki o uporabnikih</b><br>
+					<span *ngFor="let key of keysToggle[0]; let i = index" (click)="toggleKeys(0,i)">
+						<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
+						<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
+					</span>
+					<button class="btn btn-info btn-sm hidden-print" (click)="clicked(0); false">  
+        				  <i class="fa fa-floppy-o"></i> Shrani
+     			   </button>
+					<hr>
+					<b>Podatki o dogodkih</b><br>
+					<span *ngFor="let key of keysToggle[1]; let i = index" (click)="toggleKeys(1,i)">
+						<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
+						<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
+					</span>
+					<button class="btn btn-info btn-sm hidden-print" (click)="clicked(1); false">  
+        				  <i class="fa fa-floppy-o"></i> Shrani
+     			   </button>
+					<hr>
+					<b>Podatki o obiskanosti in realizaciji</b><br>
+					<span *ngFor="let key of keysToggle[2]; let i = index" (click)="toggleKeys(2,i)">
+						<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
+						<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
+					</span>
+					<button class="btn btn-info btn-sm hidden-print" (click)="clicked(2); false">  
+        				  <i class="fa fa-floppy-o"></i> Shrani
+     			   </button>
+					<hr>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

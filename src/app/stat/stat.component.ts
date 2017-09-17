@@ -1,4 +1,3 @@
-import { Workbook } from './../special/export/export.component';
 import { VStatPlanApi } from './../shared/sdk/services/custom/VStatPlan';
 import { VStatPlanMonthApi } from './../shared/sdk/services/custom/VStatPlanMonth';
 import { ThemeApi } from './../shared/sdk/services/custom/Theme';
@@ -16,8 +15,6 @@ import { LabelService } from './../services/label.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseFormComponent } from '../ui/forms/baseForm.component';
 let moment = require('../../assets/js/moment.min.js');
-import * as XLSX from 'xlsx';
-let FileSaver = require('file-saver');
 
 @Component({
   selector: 'app-stat',
@@ -377,8 +374,8 @@ export class StatComponent extends BaseFormComponent implements OnInit {
               this.plangrid[index][parseInt(r['month']) - 1] = r['sumtime'];
             }
           }, this.errMethod);*/
-        
-          this._planVF.find({ where: { id: { inq: tkids } } })
+
+        this._planVF.find({ where: { id: { inq: tkids } } })
           .subscribe(res2 => {
 
             for (let r of res2) {
@@ -386,7 +383,6 @@ export class StatComponent extends BaseFormComponent implements OnInit {
               this.plangrid[index][parseInt(r['month']) - 1] = r['sumtime'];
               this.plangridv[index][parseInt(r['month']) - 1] = r['sumperson'];
             }
-            this.clicked(2);
           }, this.errMethod);
 
         this.fixListLength(this.paginatorPageSize, this.plan);
@@ -427,126 +423,22 @@ export class StatComponent extends BaseFormComponent implements OnInit {
     window.print();
   }
 
-  /* FIXME: this should be externalied, 90% the same method is in export.component.ts */
-  saveExcel(param: any, filename: string, idx: number) {
-    const wb = new Workbook();
-
-    const out = new Array;
-
-    let rowData = new Array;
-
-    // print header
-    /*for (let i = 0; i < this.keysToggle[idx].length; i++) {
-      if (this.keysToggle[idx][i].selected) {
-        rowData.push(this.keysToggle[idx][i].title);
-        this.rowDataIndex.push(i);
-      }
-    }
-    out.push(rowData); // write header
-*/
-    // print data
-    param.forEach(function (row, index) {
-      rowData = [];
-  /*    for (let i = 0; i < this.keysToggle[idx].length; i++) {
-        if (this.keysToggle[idx][i].selected) {
-          rowData.push(row[this.keysToggle[idx][i].key]);
+  reset(type, state) {
+    if (type === 'partners') {
+      this.selectedChoicesP = [];
+      if (state) {
+        for (let c of this.choicesP) {
+          this.selectedChoicesP.push(c['id']);
         }
-    }*/
-      rowData.push(JSON.stringify(row));
-      out.push(rowData);
-    }, this);
-
-    const sheetName = 'Podatki';
-    wb.SheetNames.push(sheetName);
-    wb.Sheets[sheetName] = this.sheet_from_array_of_arrays(out, idx);
-
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' }); // bookSST: true,
-    FileSaver.saveAs(new Blob([this.s2ab(wbout)], { type: 'application/octet-stream' }), filename + '.xlsx');
-  }
-
-  sheet_from_array_of_arrays(data: any, idx: number, opts?: any): any {
-    const sheet: any = {};
-
-    let wscols = [];
-
-    idx = idx * 2;
-
-    for (let i = 0; i < data[0].length; i++) {
-      wscols.push({ wch: 20 });
-    }
-
-    const startCell = { c: 10000000, r: 10000000 };
-    const endCell = { c: 0, r: 0 };
-
-    const range = { s: startCell, e: endCell };
-    for (let row = 0; row !== data.length; ++row) {
-      for (let col = 0; col !== data[row].length; ++col) {
-        // prepare actual range
-        if (range.s.r > row) { range.s.r = row; }
-        if (range.s.c > col) { range.s.c = col; }
-        if (range.e.r < row) { range.e.r = row; }
-        if (range.e.c < col) { range.e.c = col; }
-
-        const cell: any = {};
-        cell.v = data[row][col];
-        const cell_ref = XLSX.utils.encode_cell({ c: col, r: row });
-        // console.log(cell_ref);
-        if (cell.v == null) {
-          continue;
-        }/*
-        if (typeof cell.v === 'number') {
-          if (this.keys[idx][this.rowDataIndex[col]].indexOf('sex') > -1 && row > 0) {
-            cell.t = 's';
-            if (cell.v === 0) cell.v = 'Ž'; else cell.v = 'M';
-          } else
-            cell.t = 'n';
-        } else if (typeof cell.v === 'boolean') {
-          cell.t = 'b';
-        } else {
-          if (this.keys[idx][this.rowDataIndex[col]].indexOf('date') > -1 && row > 0) {
-            cell.t = 's';
-            cell.v = moment(cell.v).format('D. M. Y');
-          } else if (this.keys[idx][this.rowDataIndex[col]].indexOf('time') > -1 && row > 0) {
-            cell.t = 's';
-            cell.v = moment(cell.v).format('D.M.Y HH.mm');
-          } else
-            cell.t = 's';
-        }*/
-
-
-        // console.log(cell);
-        sheet[cell_ref] = cell;
-        // console.log(ws);
       }
+    } else if (type === 'themes') {
+      this.selectedChoicesT = [];
+      if (state) {
+        for (let c of this.choicesT) {
+          this.selectedChoicesT.push(c['id']);
+        }
+      }
+      this.preparePlan(1);
     }
-    if (range.s.c < 10000000) {
-      sheet['!ref'] = XLSX.utils.encode_range(startCell, endCell);
-    }
-    sheet['!cols'] = wscols;
-    return sheet;
   }
-
-  s2ab(s) {
-    const buf = new ArrayBuffer(s.length);
-    const view = new Uint8Array(buf);
-    for (let i = 0; i !== s.length; ++i) {
-      // tslint:disable-next-line:no-bitwise
-      view[i] = s.charCodeAt(i) & 0xFF;
-    }
-    return buf;
-  }
-
-  clicked(idx) {
-    let data;
-        if (idx === 2) {
-          this._planVF.find() // { where: { ismember: true }, order: 'lastName, firstName' })
-            .subscribe(res => {
-              data = res;
-              this.saveExcel(data, 'visits', 2);
-            });
-        } 
-    
-    
-      };
-
 }

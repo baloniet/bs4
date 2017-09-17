@@ -279,7 +279,7 @@ export abstract class BaseFormComponent {
                 }
             }
             if (showDots) {
-                return  rets.substr(0,rets.indexOf('<br>')) + '...';
+                return  rets.substr(0, rets.indexOf('<br>')) + '...';
             } else return rets;
         }
     }

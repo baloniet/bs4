@@ -48,7 +48,7 @@
 
 									<!-- partner -->
 									<label class="col-md-2 col-form-label" for="partner">{{formLabels?.partner?.name}}</label>
-									<div class="col-md-3">
+									<div class="col-md-4">
 										<ng-select [allowClear]="true" [items]="partnerItems" [active]="partnerSel" (data)="refreshValue($event,'partner')" placeholder="{{formLabels?.partner?.placeholder}}"
 										    (selected)="selected($event,'partner')">
 										</ng-select>

@@ -7,9 +7,15 @@ export interface VStatFullExportInterface {
   kindName: string;
   locationName: string;
   partnerName: string;
+  kindId: number;
+  themeId: number;
+  locationId?: number;
+  partnerId: number;
+  projectId?: number;
   id: number;
-  sumt?: number;
   sump?: number;
+  sumpm?: number;
+  sumt?: number;
 }
 
 export class VStatFullExport implements VStatFullExportInterface {
@@ -18,9 +24,15 @@ export class VStatFullExport implements VStatFullExportInterface {
   kindName: string;
   locationName: string;
   partnerName: string;
+  kindId: number;
+  themeId: number;
+  locationId: number;
+  partnerId: number;
+  projectId: number;
   id: number;
-  sumt: number;
   sump: number;
+  sumpm: number;
+  sumt: number;
   constructor(data?: VStatFullExportInterface) {
     Object.assign(this, data);
   }
@@ -72,16 +84,40 @@ export class VStatFullExport implements VStatFullExportInterface {
           name: 'partnerName',
           type: 'string'
         },
+        kindId: {
+          name: 'kindId',
+          type: 'number'
+        },
+        themeId: {
+          name: 'themeId',
+          type: 'number'
+        },
+        locationId: {
+          name: 'locationId',
+          type: 'number'
+        },
+        partnerId: {
+          name: 'partnerId',
+          type: 'number'
+        },
+        projectId: {
+          name: 'projectId',
+          type: 'number'
+        },
         id: {
           name: 'id',
           type: 'number'
         },
-        sumt: {
-          name: 'sumt',
-          type: 'number'
-        },
         sump: {
           name: 'sump',
+          type: 'number'
+        },
+        sumpm: {
+          name: 'sumpm',
+          type: 'number'
+        },
+        sumt: {
+          name: 'sumt',
           type: 'number'
         },
       },

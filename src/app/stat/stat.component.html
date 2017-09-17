@@ -135,7 +135,8 @@
 
 										<!-- Table -->
 										<div class="card-block" *ngIf="choicesT">
-
+											<i class="fa fa-square-o clickable" (click)="reset('themes',false);"></i>
+											<i class="fa fa-check-square-o clickable" (click)="reset('themes',true);"></i>
 											<table class="table table-hover table-sm ">
 												<tbody>
 													<tr *ngFor="let c of choicesT">
@@ -161,9 +162,7 @@
 							<H6>Letna kvota ur za izbrane ciljne skupine: <b>{{planSum}}</b></H6>
 							<H6>Planirano število ur za izbrane ciljne skupine: <b>{{timeSum}}</b></H6>
 						</div>
-						<button class="btn btn-info btn-sm hidden-print" (click)="clicked(2); false">  
-							<i class="fa fa-floppy-o"></i> Shrani
-					  </button>
+
 						<div style="display: block" class="col-md-12">
 							<table class="table table-hover table-sm" style="font-size: 12px" *ngIf="plan">
 								<tr style="text-align: center">
@@ -196,7 +195,7 @@
 										<span *ngIf="currMonth != k && d>0" class="text-info">{{d/60 | number : '1.2-2'}}</span>
 
 										<span *ngIf="currMonth == k && plangridv[j][k] > 0" class="text-primary"><b>{{plangridv[j][k]}}</b></span>
-										<span *ngIf="currMonth != k && plangridv[j][k] > 0" class="text-info"><b>{{plangridv[j][k]}}</b></span>										
+										<span *ngIf="currMonth != k && plangridv[j][k] > 0" class="text-info"><b>{{plangridv[j][k]}}</b></span>
 									</td>
 									<td *ngIf="!p" class="invisible">&nbsp;</td>
 									<tr>

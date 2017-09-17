@@ -3,6 +3,8 @@ import { LabelService } from './../../services/label.service';
 import { VPersonApi } from './../../shared/sdk/services/custom/VPerson';
 import { VStatFullExportApi } from './../../shared/sdk/services/custom/VStatFullExport';
 import { Component, OnInit } from '@angular/core';
+import { BaseFormComponent } from './../../ui/forms/baseForm.component';
+import { VPlocationApi } from './../../shared/sdk/services/custom/VPlocation';
 import * as XLSX from 'xlsx';
 let FileSaver = require('file-saver');
 let moment = require('../../../assets/js/moment.min.js');
@@ -11,7 +13,7 @@ let moment = require('../../../assets/js/moment.min.js');
   selector: 'app-export',
   templateUrl: './export.component.html'
 })
-export class ExportComponent implements OnInit {
+export class ExportComponent extends BaseFormComponent implements OnInit {
 
   data;
 
@@ -21,14 +23,36 @@ export class ExportComponent implements OnInit {
   rowDataIndex = [];
   months = ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij', 'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'];
 
+  // year
+  yearItems = [{ text: '2016' }, { text: '2017' }, { text: '2018' }, { text: '2019' }, { text: '2020' }, { text: '2021' }];
+  yearSel = [{ text: '2017' }];
+  private year = (new Date()).getFullYear();
+
+  // partner checkboxes
+  selectedChoicesP = [];
+  choicesP;
+
+
   constructor(
     private _apiPerson: VPersonApi,
     private _apiEvent: VFeventApi,
     private _apiPlanFE: VStatFullExportApi,
+    private _vPloc: VPlocationApi,
     private _labelService: LabelService
-  ) { }
+  ) {
+    super('stat');
+  }
 
   ngOnInit() {
+
+    this.prepareLabels(this._labelService);
+    // prepare my partners
+    this._vPloc.partners(this.getUserAppId())
+      .subscribe(res2 => {
+        this.choicesP = res2;
+        for (let r of res2)
+          this.selectedChoicesP.push(r['id']);
+      }, this.errMethod);
 
     this.keys.push(['id', 'personName', 'birthdate', 'email', 'number', 'address', 'zipcode', 'name', 'sex', 'mnum']);
     this.keys.push(['#', 'Ime in priimek', 'Rojstni datum', 'e-mail', 'Telefonska številka', 'Naslov', 'Poštna številka', 'Pošta', 'Spol', 'Šifra']);
@@ -71,6 +95,8 @@ export class ExportComponent implements OnInit {
     let out = new Array;
 
     let rowData = new Array;
+
+    this.rowDataIndex = [];
 
     if (!split) { // FIXME: split is intentionaly made for report number three, should be generalized
 
@@ -118,12 +144,15 @@ export class ExportComponent implements OnInit {
             rowData = [];
             for (let i = 0; i < this.keysToggle[idx].length; i++) {
               if (this.keysToggle[idx][i].selected) {
-                rowData.push(row[this.keysToggle[idx][i].key]);
+                if (i === 6) {
+                  rowData.push(row[this.keysToggle[idx][i].key] / 60);
+                } else
+                  rowData.push(row[this.keysToggle[idx][i].key]);
               }
             }
             out.push(rowData);
-            this.keys[6][6] += row['sumt'];
-            this.keys[6][7] += row['sump'];
+            this.keys[6][6] += row['sumt'] / 60;
+            this.keys[6][7] = row['sumpm'];
           }
         }, this);
 
@@ -235,7 +264,7 @@ export class ExportComponent implements OnInit {
           this.saveExcel(this.data, 'dogodki', 1);
         });
     } else if (idx === 2) {
-      this._apiPlanFE.find({ where: { partnerId: 1 }, order: 'year,month,kindName' })
+      this._apiPlanFE.find({ where: { partnerId: { inq: this.selectedChoicesP }, year: this.year }, order: 'year,month,kindName' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'obiski', 2, true);
@@ -246,9 +275,46 @@ export class ExportComponent implements OnInit {
 
   };
 
-  toggle(idx, i) {
+  toggleKeys(idx, i) {
     this.keysToggle[idx][i].selected = !this.keysToggle[idx][i].selected;
   }
+
+  // method for select boxes
+  public selected(value: any, type: string): void {
+
+    if (type === 'year') {
+      this.yearSel = [{ text: value.text }];
+      this.year = parseInt(value.text);
+    }
+  }
+
+  exists(id, type) {
+    if (type === 'partners') {
+      return this.selectedChoicesP.indexOf(id) > -1;
+    }
+  }
+
+  toggle(obj, type) {
+    let id = obj.id;
+    if (type === 'partners') {
+      let index = this.selectedChoicesP.indexOf(id);
+      if (index === -1) {
+        this.selectedChoicesP.push(id);
+      } else this.selectedChoicesP.splice(index, 1);
+    }
+  }
+
+  reset(type, state) {
+    if (type === 'partners') {
+      this.selectedChoicesP = [];
+      if (state) {
+        for (let c of this.choicesP) {
+          this.selectedChoicesP.push(c['id']);
+        }
+      }
+    }
+  }
+
 
 }
 
