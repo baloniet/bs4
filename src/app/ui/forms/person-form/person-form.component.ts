@@ -48,10 +48,10 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   private citSel = [];
   private eduItems;
   private eduSelIn = [];
-  //private eduSelOut = [];
+  // private eduSelOut = [];
   private empItems;
   private empSelIn = [];
-  //private empSelOut = [];
+  // private empSelOut = [];
   private minDate: NgbDateStruct;
   private stmtItems;
   private choices;
@@ -101,7 +101,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
       content: [],
       birthdate: [],
       cdate: [],
-      mobileNumber: ['', Validators.required],//validator za številke
+      mobileNumber: ['', Validators.required], // validator za številke
       email: ['', Validators.compose([BasicValidators.email])],
       addresses: this._fb.array([
         this.initAddress()
@@ -164,11 +164,10 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   // delete formcontrol from UI, delete relation from DB
   removeStatement(i: number, fcName: string, event) {
     const control = <FormArray>this.form.controls[fcName];
-    if (control.length == 1 && fcName == 'statements') {
-      control.setErrors({ "error": "mustExistOne" });
+    if (control.length === 1 && fcName === 'statements') {
+      control.setErrors({ 'error': 'mustExistOne' });
       this.stmtError = true;
-    }
-    else {
+    } else {
       control.removeAt(i);
       this._stApi.deleteById(event.id)
         .subscribe(null, error => console.log(error));
@@ -183,14 +182,14 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
           let s = <PStat>res[0];
           let dates = event.cdate.split('.');
           s.cdate = moment().set({ 'date': dates[0], 'month': dates[1] - 1, 'year': dates[2] });
-          this._stApi.upsert(s).subscribe(res => console.log(res), this.errMethod, () => this.setError("saved"));
+          this._stApi.upsert(s).subscribe(res2 => console.log(res2), this.errMethod, () => this.setError('saved'));
         }, this.errMethod);
   }
 
 
   back() {
     if (!this.error)
-      //this._location.back();
+      // this._location.back();
       this._router.navigate(['/genlist/person']);
   }
 
@@ -198,7 +197,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   save(model) {
     let localModel;
 
-    //clone
+    // clone
 
     localModel = Object.assign({}, model);
 
@@ -218,8 +217,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
             let p = <Person>res;
             this.saveData(p, localModel);
           }, this.errMethod);
-      }
-      else {
+      } else {
         this._api.upsert(localModel)
           .subscribe(res => {
             let p = <Person>res;
@@ -233,7 +231,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
 
   private saveData(p: Person, model) {
 
-    //2. save mobileNumber
+    // 2. save mobileNumber
     if (this.form.controls['mobileNumber'].touched) {
       this._phoneApi.upsert(
         new PPhone(
@@ -242,7 +240,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
         .subscribe(null, res => console.log(res));
     }
 
-    //3. save email
+    // 3. save email
     if (this.form.controls['email'].touched)
       this._emailApi.upsert(
         new PEmail(
@@ -250,7 +248,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
         ))
         .subscribe(null, res => console.log(res));
 
-    //4. save citizenship
+    // 4. save citizenship
     if (this.citSel[0])
       this._pCitApi.upsert(
         new PCiti(
@@ -258,7 +256,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
         ))
         .subscribe(null, res => console.log(res));
 
-    //5. save education
+    // 5. save education
     if (this.eduSelIn[0])
       this._pEduApi.upsert(
         new PEdu(
@@ -273,7 +271,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
           ))
           .subscribe(null, res => console.log(res));*/
 
-    //6 save employment
+    // 6 save employment
     if (this.empSelIn[0])
       this._pEmpApi.upsert(
         new PEmp(
@@ -288,10 +286,10 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
         ))
         .subscribe(null, res => console.log(res));*/
 
-    //7. save addresses
+    // 7. save addresses
     this.saveAddresses((<any>model).addresses, p.id);    // ugly fix in both cases but it works
 
-    //8. save statements
+    // 8. save statements
     this.saveStatements((<any>model).statements, p.id);  // ugly fix in both cases but it works
     this.form.markAsPristine();
   }
@@ -299,7 +297,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   // saving person of type isteacher or isvolunteer
   private saveAddresses(addresses, id) {
     for (let a of addresses) {
-      if (a.id == 0 && a.address)
+      if (a.id === 0 && a.address)
         this._pAdrApi.upsert(
           new PAddress(
             { personId: id, postId: a.post_id, communeId: a.commune_id, address: a.address, id: 0 }
@@ -311,11 +309,11 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   private saveStatements(statements, id) {
     if (statements) {
       for (let t of statements) {
-        if (t.relId == 0 && t.statementId) {
+        if (t.relId === 0 && t.statementId) {
           // first check if statement type already exist for this person and this year
           this._stApi.find({ where: { personId: id, statementId: t.statementId, year: now.getFullYear() } })
             .subscribe(res => {
-              if (res.length == 0) {
+              if (res.length === 0) {
                 console.log(t);
                 let cdates = null;
                 if (t.cdate) {
@@ -335,20 +333,19 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
         }
       }
       this.back();
-    }
-    else
+    } else
       this.back();
   }
 
-  //citizenship select box
+  // citizenship select box
   public selected(value: any, type: string): void {
-    if (type == "cit")
+    if (type === 'cit')
       this.citSel = [{ id: value.id, text: value.text }];
-    if (type == "eduin")
+    if (type === 'eduin')
       this.eduSelIn = [{ id: value.id, text: value.text }];
     /* if (type == "eduout")
        this.eduSelOut = [{ id: value.id, text: value.text }];*/
-    if (type == "empin")
+    if (type === 'empin')
       this.empSelIn = [{ id: value.id, text: value.text }];
     /*if (type == "empout")
       this.empSelOut = [{ id: value.id, text: value.text }];*/
@@ -361,7 +358,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   selectData(param) {
 
     // get citizenship values
-    this._citApi.find({ order: "name" }).subscribe(res => {
+    this._citApi.find({ order: 'name' }).subscribe(res => {
       this.citItems = [];
       for (let one of res) {
         this.citItems.push({ id: (<Citizenship>one).id, text: (<Citizenship>one).name });
@@ -369,14 +366,14 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
     });
 
     // get statement values, this is not ordinary get statement this stmtItems are different!!
-    this._stmtApi.find({ order: "name" }).subscribe(res => {
+    this._stmtApi.find({ order: 'name' }).subscribe(res => {
       this.stmtItems = [];
       for (let one of res) {
         this.stmtItems.push({ id: (<Statement>one).id, text: (<Statement>one).name, content: (<Statement>one).content });
       }
     });
     // get education values
-    this._eduApi.find({ order: "name" }).subscribe(res => {
+    this._eduApi.find({ order: 'name' }).subscribe(res => {
       this.eduItems = [];
       for (let one of res) {
         this.eduItems.push({ id: (<Education>one).id, text: this.lineBreaker((<Education>one).name, 60, false) });
@@ -384,7 +381,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
     });
 
     // get employment values
-    this._empApi.find({ order: "name" }).subscribe(res => {
+    this._empApi.find({ order: 'name' }).subscribe(res => {
       this.empItems = [];
       for (let one of res) {
         this.empItems.push({ id: (<Employment>one).id, text: (<Employment>one).name });
@@ -438,7 +435,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
 
     this._api.find({
       where: { or: [{ firstname: { like: value } }, { lastname: { like: value } }] },
-      order: ["lastname", "firstname"], limit: this.paginatorPageSize, skip: this.paginatorPageSize * (page - 1)
+      order: ['lastname', 'firstname'], limit: this.paginatorPageSize, skip: this.paginatorPageSize * (page - 1)
     })
       .subscribe(res => {
         this.choices = res;
@@ -458,11 +455,10 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
     this._api.findById(this.form.value.id)
       .subscribe(res => {
         let pers = <Person>res;
-        if (pers.mpersonId == p.id) {
+        if (pers.mpersonId === p.id) {
           pers.mpersonId = null;
           this.conperson = null;
-        }
-        else {
+        } else {
           pers.mpersonId = p.id;
           this.conperson = p;
         }
@@ -476,8 +472,8 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
     this.full = true;
     Observable.forkJoin(
       this._api.findById(param.id),
-      this._api.getPhones(param.id), //filter numbertype=1
-      this._api.getEmails(param.id),  //filter emailtype=1
+      this._api.getPhones(param.id), // filter numbertype=1
+      this._api.getEmails(param.id),  // filter emailtype=1
       this._api.getCiti(param.id),
       this._api.getEdu(param.id),
       this._api.getAddss(param.id),
@@ -498,24 +494,24 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
 
         this.data.mobileNumber = this.phones.length > 0 ? this.phones[0].number : '';
         this.data.email = this.emails.length > 0 && this.emails[0].email ? this.emails[0].email : '';
-        this.citSel = res[3][0] ? this.fromId(this.citItems, res[3][0]['citizenshipId']) : ''; //res number 3 array 0
+        this.citSel = res[3][0] ? this.fromId(this.citItems, res[3][0]['citizenshipId']) : ''; // res number 3 array 0
         // educations
         for (let e of res[4]) {
-          if (e.edutype == 1)
-            this.eduSelIn = e ? this.fromId(this.eduItems, e.educationId) : '';//res number 4 array 0  
+          if (e.edutype === 1)
+            this.eduSelIn = e ? this.fromId(this.eduItems, e.educationId) : ''; // res number 4 array 0  
           /*     else if (e.edutype == 2)
                  this.eduSelOut = e ? this.fromId(this.eduItems, e.educationId) : '';//res number 4 array 0  */
         }
         // emplyments
         for (let e of res[7]) {
-          if (e.emptype == 1)
-            this.empSelIn = e ? this.fromId(this.empItems, e.employmentId) : '';//res number 4 array 0  
+          if (e.emptype === 1)
+            this.empSelIn = e ? this.fromId(this.empItems, e.employmentId) : ''; // res number 4 array 0  
           /*    else if (e.emptype == 2)
                 this.empSelOut = e ? this.fromId(this.empItems, e.employmentId) : '';//res number 4 array 0  */
         }
 
-        if (this.data.sex == 1) this.isMan = true;
-        if (this.data.sex == 0) this.isWoman = true;
+        if (this.data.sex === 1) this.isMan = true;
+        if (this.data.sex === 0) this.isWoman = true;
 
         this.prepareAddressesComponent(res[5]);
         this.prepareStatementComponent(res[6]);
@@ -532,8 +528,8 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
 
     Observable.forkJoin(
       this._api.findById(param.id),
-      this._api.getPhones(param.id), //filter numbertype=1
-      this._api.getEmails(param.id)  //filter emailtype=1
+      this._api.getPhones(param.id), // filter numbertype=1
+      this._api.getEmails(param.id)  // filter emailtype=1
     ).subscribe(
       res => {
 
@@ -595,7 +591,7 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
       t++;
     }
 
-    if (t == 0) (<[{}]>this.data['addresses']).push({ id: '', address: '', post_id: '', commune_id: '' });
+    if (t === 0) (<[{}]>this.data['addresses']).push({ id: '', address: '', post_id: '', commune_id: '' });
     this.form.updateValueAndValidity();
   }
 
@@ -638,15 +634,15 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
   sex(v) {
     this.isMan = false;
     this.isWoman = false;
-    if (v == 1) this.isMan = true;
-    if (v == 0) this.isWoman = true;
+    if (v === 1) this.isMan = true;
+    if (v === 0) this.isWoman = true;
     this.form.markAsDirty();
   }
 
   @ViewChild('dataContainer') dataContainer: ElementRef;
   preparePrint(value) {
     let partner;
-    //prepare partner data
+    // prepare partner data
     this._vplocApi.find({ where: { personId: this.getUserAppId(), statementId: value.id } })
       .subscribe(res => {
         partner = res[0];

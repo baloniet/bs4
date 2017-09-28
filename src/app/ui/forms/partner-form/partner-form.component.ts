@@ -33,7 +33,8 @@ export class PartnerFormComponent extends BaseFormComponent implements OnInit {
       short: '',
       shortname: '',
       content: '',
-      ismain: ''
+      ismain: '',
+      ispublic: ''
     });
 
     this.prepareLabels(this._labelService);

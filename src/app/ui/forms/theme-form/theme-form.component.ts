@@ -24,19 +24,20 @@ export class ThemeFormComponent extends BaseFormComponent implements OnInit {
   private data;
 
   presetColors = [
-    "#ff4000", "#ff8000", "#ffbf00", "#ffff00", "#bfff00", "#80ff00", "#40ff00", "#00ff00", "#00ff40", "#00ff80",
-    "#00ffbf", "#00ffff", "#00bfff", "#0080ff", "#0040ff", "#0000ff", "#4000ff", "#8000ff", "#bf00ff", "#ff00ff",
-    "#ff00bf", "#ff0080", "#ff0040", "#ff0000"
+    '#ff4000', '#ff8000', '#ffbf00', '#ffff00', '#bfff00', '#80ff00', '#40ff00', '#00ff00', '#00ff40', '#00ff80',
+    '#00ffbf', '#00ffff', '#00bfff', '#0080ff', '#0040ff', '#0000ff', '#4000ff', '#8000ff', '#bf00ff', '#ff00ff',
+    '#ff00bf', '#ff0080', '#ff0040', '#ff0000'
   ];
 
-  //private kinds;
+  // private kinds;
   private options = [];
   private opts = [];
   private partnerItems;
   private partnerSel = [];
 
-  private yearItems = [{ id: 2017, text: "2017" }, { id: 2018, text: "2018" }, { id: 2019, text: "2019" }, { id: 2020, text: "2020" }, { id: 2021, text: "2021" }];
-  private yearSel = [{ id: 2017, text: "2017" }];
+  private yearItems = [
+    { id: 2017, text: '2017' }, { id: 2018, text: '2018' }, { id: 2019, text: '2019' }, { id: 2020, text: '2020' }, { id: 2021, text: '2021' }];
+  private yearSel = [{ id: 2017, text: '2017' }];
 
   constructor(
     private cpService: ColorPickerService,
@@ -198,13 +199,13 @@ export class ThemeFormComponent extends BaseFormComponent implements OnInit {
       .subscribe(res => o.id = (<TKind>res).id, err => console.log(err));
   }
 
-  //method for select boxes
+  // method for select boxes
   public selected(value: any, type: string): void {
 
-    if (type == "partner") {
+    if (type == 'partner') {
       this.partnerSel = [{ id: value.id, text: value.text }];
       this.prepareData(this.data.id);
-    } else if (type == "year") {
+    } else if (type == 'year') {
       this.yearSel = [{ id: value.id, text: value.text }];
       this.prepareData(this.data.id);
     }

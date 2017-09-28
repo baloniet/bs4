@@ -145,13 +145,13 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
             for (let i = 0; i < this.keysToggle[idx].length; i++) {
               if (this.keysToggle[idx][i].selected) {
                 if (i === 6) {
-                  rowData.push(row[this.keysToggle[idx][i].key] / 60);
+                  rowData.push(row[this.keysToggle[idx][i].key] / 45);
                 } else
                   rowData.push(row[this.keysToggle[idx][i].key]);
               }
             }
             out.push(rowData);
-            this.keys[6][6] += row['sumt'] / 60;
+            this.keys[6][6] += row['sumt'] / 45;
             this.keys[6][7] = row['sumpm'];
           }
         }, this);

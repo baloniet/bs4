@@ -59,10 +59,8 @@ export class TemplateFormComponent extends BaseFormComponent implements OnInit {
           this.partnerSel = act.partnerId ? this.fromId(this.partnerItems, act.partnerId) : this.selectFirst(this.partnerItems);
 
         // lock form if partner not my
-        if (this.fromId(this.partnerItems, this.data.partnerId).length > 0)
-          this.setLocked(false);
-        else
-          this.setLocked(true);
+        if (this.fromId(this.partnerItems, this.data.partnerId).length > 0 || !this.getParam('id'))
+          this.setLocked(false); else this.setLocked(true);
       });
   }
 
@@ -91,7 +89,7 @@ export class TemplateFormComponent extends BaseFormComponent implements OnInit {
   // call service to find model in db
   selectData(param) {
 
-    if (param.id)
+    if (param.id) {
       this._api.findById(param.id)
         .subscribe(res => {
           this.data = res;
@@ -99,8 +97,10 @@ export class TemplateFormComponent extends BaseFormComponent implements OnInit {
           (<FormGroup>this.form)
             .setValue(this.data, { onlySelf: true });
         });
-    else
+    } else {
+      this.data = {};
       this.preparePartnerValues();
+    }
   }
 
 
@@ -120,10 +120,10 @@ export class TemplateFormComponent extends BaseFormComponent implements OnInit {
     this._location.back();
   }
 
-  //method for select boxes
+  // method for select boxes
   public selected(value: any, type: string): void {
 
-    if (type == "partner") {
+    if (type === 'partner') {
       this.partnerSel = [{ id: value.id, text: value.text }];
     }
 
