@@ -186,6 +186,7 @@
 		"isoff",
 		"isrented",
 		"isother",
-		"cnt"
+		"cnt",
+		"location"
 	]
 }

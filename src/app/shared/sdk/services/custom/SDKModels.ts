@@ -37,7 +37,6 @@ import { Kind } from '../../models/Kind';
 import { Location } from '../../models/Location';
 import { Type } from '../../models/Type';
 import { TKind } from '../../models/TKind';
-import { VFevent } from '../../models/VFevent';
 import { VMevent } from '../../models/VMevent';
 import { VMein } from '../../models/VMein';
 import { VLocation } from '../../models/VLocation';
@@ -66,6 +65,8 @@ import { VStatPlan } from '../../models/VStatPlan';
 import { Register } from '../../models/Register';
 import { VStatFull } from '../../models/VStatFull';
 import { VStatFullExport } from '../../models/VStatFullExport';
+import { VPersonExport } from '../../models/VPersonExport';
+import { VFevent } from '../../models/VFevent';
 
 @Injectable()
 export class SDKModels {
@@ -108,7 +109,6 @@ export class SDKModels {
     Location: Location,
     Type: Type,
     TKind: TKind,
-    VFevent: VFevent,
     VMevent: VMevent,
     VMein: VMein,
     VLocation: VLocation,
@@ -137,6 +137,8 @@ export class SDKModels {
     Register: Register,
     VStatFull: VStatFull,
     VStatFullExport: VStatFullExport,
+    VPersonExport: VPersonExport,
+    VFevent: VFevent,
     
   };
 

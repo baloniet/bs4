@@ -231,7 +231,7 @@ export class GenListComponent extends BaseFormComponent implements OnInit {
 
 		if (id == "activity")
 			this._actVApi.find({
-				where: { and: [lbf.where, { locationId: { inq: this.getUserLocationsIds() } }] },
+				where: { and: [lbf.where, { or: [ {locationId: { inq: this.getUserLocationsIds() }},{locationId: null} ]}] },
 				order: ["name"], limit: this.paginatorPageSize, skip: this.paginatorPageSize * (page - 1)
 			})
 				.subscribe(res => {
@@ -334,6 +334,10 @@ export class GenListComponent extends BaseFormComponent implements OnInit {
 
 	getPartnerName(val) {
 		return (this.fromIdO(this.getUserPartners(), val)).name;
+	}
+
+	getLocationName(val) {
+		return (this.fromIdO(this.getUserLocations(), val)).name;
 	}
 
 }

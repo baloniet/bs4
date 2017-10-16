@@ -38,7 +38,7 @@
 
 			<div class="col-md-8">
 				<div class="card-block">
-					<b>Podatki o uporabnikih</b><br>
+					<b>Podatki o uporabnikih</b> registriranih na lokacijah uporabnika aplikacije <br>
 					<span *ngFor="let key of keysToggle[0]; let i = index" (click)="toggleKeys(0,i)">
 						<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
 						<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>
@@ -47,7 +47,7 @@
         				  <i class="fa fa-floppy-o"></i> Shrani
      			   </button>
 					<hr>
-					<b>Podatki o dogodkih</b><br>
+					<b>Podatki o dogodkih</b> izvajanih na lokacijah uporabnika aplikacije<br>
 					<span *ngFor="let key of keysToggle[1]; let i = index" (click)="toggleKeys(1,i)">
 						<span *ngIf="key.selected" class="tag tag-success">{{key.title}}</span>
 						<span *ngIf="!key.selected" class="tag tag-default">{{key.title}}</span>

@@ -5,11 +5,12 @@ export interface VFeventInterface {
   id: number;
   starttime?: Date;
   endtime?: Date;
+  year?: number;
   name?: string;
   isrented?: number;
   isacc?: number;
   isoff?: number;
-  rname: string;
+  rname?: string;
   publish?: number;
   content?: string;
   acontent?: string;
@@ -21,7 +22,7 @@ export interface VFeventInterface {
   people?: string;
   color?: string;
   activityId: number;
-  roomId: number;
+  roomId?: number;
   isother?: number;
   locationId?: number;
 }
@@ -30,6 +31,7 @@ export class VFevent implements VFeventInterface {
   id: number;
   starttime: Date;
   endtime: Date;
+  year: number;
   name: string;
   isrented: number;
   isacc: number;
@@ -91,6 +93,10 @@ export class VFevent implements VFeventInterface {
         endtime: {
           name: 'endtime',
           type: 'Date'
+        },
+        year: {
+          name: 'year',
+          type: 'number'
         },
         name: {
           name: 'name',

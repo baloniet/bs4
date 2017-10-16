@@ -80,7 +80,6 @@ import { KindApi } from './services/custom/Kind';
 import { LocationApi } from './services/custom/Location';
 import { TypeApi } from './services/custom/Type';
 import { TKindApi } from './services/custom/TKind';
-import { VFeventApi } from './services/custom/VFevent';
 import { VMeventApi } from './services/custom/VMevent';
 import { VMeinApi } from './services/custom/VMein';
 import { VLocationApi } from './services/custom/VLocation';
@@ -109,6 +108,8 @@ import { VStatPlanApi } from './services/custom/VStatPlan';
 import { RegisterApi } from './services/custom/Register';
 import { VStatFullApi } from './services/custom/VStatFull';
 import { VStatFullExportApi } from './services/custom/VStatFullExport';
+import { VPersonExportApi } from './services/custom/VPersonExport';
+import { VFeventApi } from './services/custom/VFevent';
 /**
 * @module SDKBrowserModule
 * @description
@@ -172,7 +173,6 @@ export class SDKBrowserModule {
         LocationApi,
         TypeApi,
         TKindApi,
-        VFeventApi,
         VMeventApi,
         VMeinApi,
         VLocationApi,
@@ -201,6 +201,8 @@ export class SDKBrowserModule {
         RegisterApi,
         VStatFullApi,
         VStatFullExportApi,
+        VPersonExportApi,
+        VFeventApi,
         { provide: InternalStorage, useClass: CookieBrowser }
       ]
     };

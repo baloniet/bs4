@@ -36,7 +36,6 @@ export * from './Kind';
 export * from './Location';
 export * from './Type';
 export * from './TKind';
-export * from './VFevent';
 export * from './VMevent';
 export * from './VMein';
 export * from './VLocation';
@@ -65,5 +64,7 @@ export * from './VStatPlan';
 export * from './Register';
 export * from './VStatFull';
 export * from './VStatFullExport';
+export * from './VPersonExport';
+export * from './VFevent';
 export * from './BaseModels';
 

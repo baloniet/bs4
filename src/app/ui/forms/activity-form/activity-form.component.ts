@@ -420,7 +420,8 @@ export class ActivityFormComponent extends BaseFormComponent implements OnInit {
             this.themeItems.push({ id: one.theme_id, text: one.themeName });
           if (act) {
             this.themeSel = act.themeId ? this.fromId(this.themeItems, act.themeId) : '';
-            this.prepareKindValues(this.themeSel[0].id, act.kindId);
+            if (act.kindId){
+            this.prepareKindValues(this.themeSel[0].id, act.kindId);}
           }
         }, this.errMethod);
 

@@ -1,6 +1,7 @@
+import { ActivatedRoute } from '@angular/router';
 import { VFeventApi } from './../../shared/sdk/services/custom/VFevent';
 import { LabelService } from './../../services/label.service';
-import { VPersonApi } from './../../shared/sdk/services/custom/VPerson';
+import { VPersonExportApi } from './../../shared/sdk/services/custom/VPersonExport';
 import { VStatFullExportApi } from './../../shared/sdk/services/custom/VStatFullExport';
 import { Component, OnInit } from '@angular/core';
 import { BaseFormComponent } from './../../ui/forms/baseForm.component';
@@ -34,11 +35,12 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
 
 
   constructor(
-    private _apiPerson: VPersonApi,
+    private _apiPersonExport: VPersonExportApi,
     private _apiEvent: VFeventApi,
     private _apiPlanFE: VStatFullExportApi,
     private _vPloc: VPlocationApi,
-    private _labelService: LabelService
+    private _labelService: LabelService,
+    private _route: ActivatedRoute
   ) {
     super('stat');
   }
@@ -46,6 +48,7 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
   ngOnInit() {
 
     this.prepareLabels(this._labelService);
+    this.getProvidedRouteParamsLocations(this._route, this._vPloc);
     // prepare my partners
     this._vPloc.partners(this.getUserAppId())
       .subscribe(res2 => {
@@ -252,13 +255,13 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
   clicked(idx) {
 
     if (idx === 0) {
-      this._apiPerson.find({ where: { ismember: true }, order: 'lastName, firstName' })
+      this._apiPersonExport.find({ where: { ismember: true, locationId: {inq: this.getUserLocationsIds()}, year: this.year }, order: 'lastName, firstName' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'uporabniki', 0);
         });
     } else if (idx === 1) {
-      this._apiEvent.find({ where: { isAcc: true }, order: 'starttime' })
+      this._apiEvent.find({ where: { isacc: true, locationId: {inq: this.getUserLocationsIds()}, year: this.year }, order: 'starttime' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'dogodki', 1);

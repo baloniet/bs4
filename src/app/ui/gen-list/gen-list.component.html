@@ -62,6 +62,8 @@
 
 									<span *ngIf="labels.properties[val]?.type == 'partner' && d[val]">{{getPartnerName(d[val])}}</span>
 
+									<span *ngIf="labels.properties[val]?.type == 'location' && d[val]">{{getLocationName(d[val])}}</span>
+
 								</span>
 							</td>
 							<td *ngIf="d.id" align="right" style="white-space: nowrap">
