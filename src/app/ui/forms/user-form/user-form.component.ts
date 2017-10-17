@@ -1,3 +1,5 @@
+import { PartnerApi } from './../../../shared/sdk/services/custom/Partner';
+import { VPlocationApi } from './../../../shared/sdk/services/custom/VPlocation';
 import { LocationApi } from './../../../shared/sdk/services/custom/Location';
 import { PLocation } from './../../../shared/sdk/models/PLocation';
 import { PLocationApi } from './../../../shared/sdk/services/custom/PLocation';
@@ -24,6 +26,7 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
   user: LeUser;
   private options = [];
   private opts = [];
+  private partners = [];
 
   paginatorPageSize = 10;
   paginatorLCount = 0;
@@ -37,6 +40,8 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
     private _personApi: PersonApi,
     private _pLocApi: PLocationApi,
     private _locApi: LocationApi,
+    private _vPlocApi: VPlocationApi,
+    private _partnerApi: PartnerApi,
     private _fb: FormBuilder
   ) {
     super('user');
@@ -66,7 +71,7 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
     });
 
     this.prepareLabels(this._labelService);
-    this.getProvidedRouteParams(this._route);
+    this.getProvidedRouteParamsLocations(this._route,this._vPlocApi);
   }
 
   back() {
@@ -113,11 +118,13 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
         this._api.find({ where: { personId: null } }),
         this._api.find({ where: { personId: param.id } }),
         this._pLocApi.find({ where: { personId: param.id } }),
-        this._locApi.find()
+        this._locApi.find(),
+        this._partnerApi.find()
       ).subscribe(
         res => {
 
           this.data = res[0];
+          this.partners = res[5];
 
           // user
           this.userItems = [];
@@ -156,16 +163,20 @@ export class UserFormComponent extends BaseFormComponent implements OnInit {
     for (let k of locations) {
       for (let tk of plocs) {
         if (tk.locationId === k.id) {
-          this.opts.push({ id: tk.id, personId: tk.personId, locationId: tk.locationId, name: k.name });
+          this.opts.push({ id: tk.id, personId: tk.personId, locationId: tk.locationId, name: k.name, partner: this.getPartnerName(k.partnerId) });
           c.push(k.id);
         }
       }
     }
     for (let k of locations)
       if (c.indexOf(k.id) === -1)
-        this.opts.push({ id: null, personId: null, locationId: k.id, name: k.name });
+        this.opts.push({ id: null, personId: null, locationId: k.id, name: k.name, partner: this.getPartnerName(k.partnerId)  });
     this.paginatorLCount = this.opts.length;
     this.findLocation(1);
+  }
+
+  getPartnerName(val) {
+    return (this.fromIdO(this.partners, val)).name;
   }
 
   // delete model with service from db, return to list

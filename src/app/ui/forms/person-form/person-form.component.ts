@@ -604,6 +604,10 @@ export class PersonFormComponent extends BaseFormComponent implements OnInit {
 
     for (let p of aStat) {
       st = this.fromId(this.stmtItems, p.statementId);
+      if (!st) {
+        st = [{text:''}];
+      }
+
       let dates = '';
       if (p.cdate)
         dates = moment(p.cdate).format('DD.MM.YYYY');

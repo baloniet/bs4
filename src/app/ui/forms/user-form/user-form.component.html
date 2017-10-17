@@ -72,8 +72,8 @@
             <table *ngIf="options" class="table-sm table-hover table">
               <tr *ngFor="let o of options" class="text-primary">
                 <td>
-                  <span *ngIf="!o.id && o"><i (click)="addLocation(o)" class="fa fa-check-square text-muted clickable" aria-hidden="true"></i> {{o.name}}</span>
-                  <span *ngIf="o.id"><i (click)="removeLocation(o)" class="fa fa-check-square text-success clickable" aria-hidden="true"></i> {{o.name}}</span>
+                  <span *ngIf="!o.id && o"><i (click)="addLocation(o)" class="fa fa-check-square text-muted clickable" aria-hidden="true"></i> {{o.name}} <small class="text-muted">{{o.partner}}</small></span>
+                  <span *ngIf="o.id"><i (click)="removeLocation(o)" class="fa fa-check-square text-success clickable" aria-hidden="true"></i> {{o.name}} <small class="text-muted">{{o.partner}}</small></span>
                 </td>
                 <td *ngIf="!o" class="invisible">&nbsp;</td>
               </tr>

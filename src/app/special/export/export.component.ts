@@ -29,9 +29,9 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
   yearSel = [{ text: '2017' }];
   private year = (new Date()).getFullYear();
 
-  // partner checkboxes
-  selectedChoicesP = [];
-  choicesP;
+  // location checkboxes
+  selectedChoicesL = [];
+  choicesL;
 
 
   constructor(
@@ -49,15 +49,15 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
 
     this.prepareLabels(this._labelService);
     this.getProvidedRouteParamsLocations(this._route, this._vPloc);
-    // prepare my partners
-    this._vPloc.partners(this.getUserAppId())
+    // prepare my locations
+    this._vPloc.locations(this.getUserAppId())
       .subscribe(res2 => {
-        this.choicesP = res2;
+        this.choicesL = res2;
         for (let r of res2)
-          this.selectedChoicesP.push(r['id']);
+          this.selectedChoicesL.push(r['id']);
       }, this.errMethod);
 
-    this.keys.push(['id', 'personName', 'birthdate', 'email', 'number', 'address', 'zipcode', 'name', 'sex', 'mnum']);
+    this.keys.push(['id', 'personName', 'birthdate', 'email', 'number', 'address', 'zipcode', 'name', 'sex', 'num']);
     this.keys.push(['#', 'Ime in priimek', 'Rojstni datum', 'e-mail', 'Telefonska številka', 'Naslov', 'Poštna številka', 'Pošta', 'Spol', 'Šifra']);
 
     this.keys.push(['id', 'starttime', 'endtime', 'name', 'rname', 'content', 'acontent', 'aname', 'preg', 'prega', 'prego']);
@@ -255,26 +255,24 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
   clicked(idx) {
 
     if (idx === 0) {
-      this._apiPersonExport.find({ where: { ismember: true, locationId: {inq: this.getUserLocationsIds()}, year: this.year }, order: 'lastName, firstName' })
+      this._apiPersonExport.find({ where: { ismember: true, locationId: {inq: this.selectedChoicesL}, year: this.year }, order: 'lastName, firstName' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'uporabniki', 0);
         });
     } else if (idx === 1) {
-      this._apiEvent.find({ where: { isacc: true, locationId: {inq: this.getUserLocationsIds()}, year: this.year }, order: 'starttime' })
+      this._apiEvent.find({ where: { isacc: true, locationId: {inq: this.selectedChoicesL}, year: this.year }, order: 'starttime' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'dogodki', 1);
         });
     } else if (idx === 2) {
-      this._apiPlanFE.find({ where: { partnerId: { inq: this.selectedChoicesP }, year: this.year }, order: 'year,month,kindName' })
+      this._apiPlanFE.find({ where: { locationId: { inq: this.selectedChoicesL }, year: this.year }, order: 'year,month,kindName' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'obiski', 2, true);
         });
     }
-
-
 
   };
 
@@ -292,27 +290,27 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
   }
 
   exists(id, type) {
-    if (type === 'partners') {
-      return this.selectedChoicesP.indexOf(id) > -1;
+    if (type === 'locations') {
+      return this.selectedChoicesL.indexOf(id) > -1;
     }
   }
 
   toggle(obj, type) {
     let id = obj.id;
-    if (type === 'partners') {
-      let index = this.selectedChoicesP.indexOf(id);
+    if (type === 'locations') {
+      let index = this.selectedChoicesL.indexOf(id);
       if (index === -1) {
-        this.selectedChoicesP.push(id);
-      } else this.selectedChoicesP.splice(index, 1);
+        this.selectedChoicesL.push(id);
+      } else this.selectedChoicesL.splice(index, 1);
     }
   }
 
   reset(type, state) {
-    if (type === 'partners') {
-      this.selectedChoicesP = [];
+    if (type === 'locations') {
+      this.selectedChoicesL = [];
       if (state) {
-        for (let c of this.choicesP) {
-          this.selectedChoicesP.push(c['id']);
+        for (let c of this.choicesL) {
+          this.selectedChoicesL.push(c['id']);
         }
       }
     }

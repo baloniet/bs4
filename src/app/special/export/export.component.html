@@ -15,17 +15,17 @@
 				</div>
 				<ngb-tabset>
 					<ngb-tab>
-						<template ngbTabTitle>{{formTitles?.partners}}</template>
+						<template ngbTabTitle>{{formTitles?.locations}}</template>
 						<template ngbTabContent>
-							<i class="fa fa-square-o clickable" (click)="reset('partners',false);"></i>
-							<i class="fa fa-check-square-o clickable" (click)="reset('partners',true);"></i>
+							<i class="fa fa-square-o clickable" (click)="reset('locations',false);"></i>
+							<i class="fa fa-check-square-o clickable" (click)="reset('locations',true);"></i>
 							<table class="table table-hover table-sm ">
 								<tbody>
-									<tr *ngFor="let c of choicesP">
+									<tr *ngFor="let c of choicesL">
 										<td>
 											<label class="form-check-inline">
 												&nbsp;
-												<input type="checkbox" class="form-check-input pull-left" [checked]="exists(c?.id,'partners')" (click)="toggle(c,'partners');"> {{c.name}}
+												<input type="checkbox" class="form-check-input pull-left" [checked]="exists(c?.id,'locations')" (click)="toggle(c,'locations');"> {{c.name}}
 												<br></label>
 										</td>
 									</tr>
