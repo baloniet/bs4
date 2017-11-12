@@ -33,6 +33,8 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
   selectedChoicesL = [];
   choicesL;
 
+  // minutes per hour
+  mpu = 60;
 
   constructor(
     private _apiPersonExport: VPersonExportApi,
@@ -148,13 +150,13 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
             for (let i = 0; i < this.keysToggle[idx].length; i++) {
               if (this.keysToggle[idx][i].selected) {
                 if (i === 6) {
-                  rowData.push(row[this.keysToggle[idx][i].key] / 45);
+                  rowData.push(row[this.keysToggle[idx][i].key] / this.mpu);
                 } else
                   rowData.push(row[this.keysToggle[idx][i].key]);
               }
             }
             out.push(rowData);
-            this.keys[6][6] += row['sumt'] / 45;
+            this.keys[6][6] += row['sumt'] / this.mpu;
             this.keys[6][7] = row['sumpm'];
           }
         }, this);

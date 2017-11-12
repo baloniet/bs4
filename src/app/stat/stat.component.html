@@ -183,16 +183,16 @@
 										<span class="text-primary">{{p.plan}}</span>
 									</td>
 									<td *ngIf="p" style="text-align:center">
-										<span *ngIf="p.sumtime/45 < p.plan" class="text-success">{{p.sumtime/45 | number : '1.2-2'}}</span>
-										<span *ngIf="p.sumtime/45 > p.plan" class="text-danger">{{p.sumtime/45 | number : '1.2-2'}}</span>
+										<span *ngIf="p.sumtime/mpu < p.plan" class="text-success">{{p.sumtime/mpu | number : '1.2-2'}}</span>
+										<span *ngIf="p.sumtime/mpu > p.plan" class="text-danger">{{p.sumtime/mpu | number : '1.2-2'}}</span>
 									</td>
 									<td *ngIf="p" style="text-align:center">
-										<span *ngIf="p.sumtimeshort/45 < p.plan" class="text-success">{{p.sumtimeshort/45 | number : '1.2-2'}}</span>
-										<span *ngIf="p.sumtimeshort/45 > p.plan" class="text-danger">{{p.sumtimeshort/45 | number : '1.2-2'}}</span>
+										<span *ngIf="p.sumtimeshort/mpu < p.plan" class="text-success">{{p.sumtimeshort/mpu | number : '1.2-2'}}</span>
+										<span *ngIf="p.sumtimeshort/mpu > p.plan" class="text-danger">{{p.sumtimeshort/mpu | number : '1.2-2'}}</span>
 									</td>
 									<td *ngFor="let d of plangrid[j]; let k = index" style="text-align: center">
-										<span *ngIf="currMonth == k && d>0" class="text-primary">{{d/45 | number : '1.2-2'}}</span>
-										<span *ngIf="currMonth != k && d>0" class="text-info">{{d/45 | number : '1.2-2'}}</span>
+										<span *ngIf="currMonth == k && d>0" class="text-primary">{{d/mpu | number : '1.2-2'}}</span>
+										<span *ngIf="currMonth != k && d>0" class="text-info">{{d/mpu | number : '1.2-2'}}</span>
 
 										<span *ngIf="currMonth == k && plangridv[j][k] > 0" class="text-primary"><b>{{plangridv[j][k]}}</b></span>
 										<span *ngIf="currMonth != k && plangridv[j][k] > 0" class="text-info"><b>{{plangridv[j][k]}}</b></span>

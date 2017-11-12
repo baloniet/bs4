@@ -60,6 +60,9 @@ export class StatComponent extends BaseFormComponent implements OnInit {
   private year = 2017;
   private statements = [];
 
+  // minutes per hour
+  mpu = 60;
+
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -336,7 +339,7 @@ export class StatComponent extends BaseFormComponent implements OnInit {
           if (r['sumtime'])
             this.timeSum += parseInt(r['sumtime']);
         }
-        this.timeSum = Math.round(this.timeSum / 45);
+        this.timeSum = Math.round(this.timeSum / this.mpu);
         this.pieChartData = [this.planSum, this.timeSum];
       }, this.errMethod);
 
