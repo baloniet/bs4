@@ -62,8 +62,13 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
     this.keys.push(['id', 'personName', 'birthdate', 'email', 'number', 'address', 'zipcode', 'name', 'sex', 'num']);
     this.keys.push(['#', 'Ime in priimek', 'Rojstni datum', 'e-mail', 'Telefonska številka', 'Naslov', 'Poštna številka', 'Pošta', 'Spol', 'Šifra']);
 
-    this.keys.push(['id', 'starttime', 'endtime', 'name', 'rname', 'content', 'acontent', 'aname', 'preg', 'prega', 'prego']);
-    this.keys.push(['#', 'Začetek', 'Konec', 'Naziv', 'Soba', 'Vsebina', 'Opis aktivnosti', 'Aktivnost', '# registriranih', '# potrjenih', '# odjavljenih']);
+    this.keys.push(['id', 'starttime', 'endtime', 'sumt', 'name', 'rname', 'lname', 'content', 'acontent', 'aname', 'preg', 'prega', 'prego']);
+    this.keys.push(
+      [
+        '#', 'Začetek', 'Konec', 'Čas izvajanja', 'Naziv',
+        'Soba', 'Lokacija', 'Vsebina', 'Opis aktivnosti', 'Aktivnost', '# registriranih', '# potrjenih', '# odjavljenih'
+      ]
+    );
 
     this.keys.push(['id', 'partnerName', 'locationName', 'kindName', 'year', 'month', 'sumt', 'sump']);
     this.keys.push(['#', 'Partner', 'Lokacija', 'Vsebina', 'Leto', 'Mesec', '# ur', '# udeležencev']);
@@ -119,7 +124,10 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
         rowData = [];
         for (let i = 0; i < this.keysToggle[idx].length; i++) {
           if (this.keysToggle[idx][i].selected) {
-            rowData.push(row[this.keysToggle[idx][i].key]);
+            if (i === 3) {
+              rowData.push(row[this.keysToggle[idx][i].key] / this.mpu);
+            } else
+              rowData.push(row[this.keysToggle[idx][i].key]);
           }
         }
         out.push(rowData);
@@ -263,7 +271,7 @@ export class ExportComponent extends BaseFormComponent implements OnInit {
           this.saveExcel(this.data, 'uporabniki', 0);
         });
     } else if (idx === 1) {
-      this._apiEvent.find({ where: { isacc: true, locationId: {inq: this.selectedChoicesL}, year: this.year }, order: 'starttime' })
+      this._apiEvent.find({ where: { isacc: true, isoff: false, locationId: {inq: this.selectedChoicesL}, year: this.year }, order: 'starttime' })
         .subscribe(res => {
           this.data = res;
           this.saveExcel(this.data, 'dogodki', 1);

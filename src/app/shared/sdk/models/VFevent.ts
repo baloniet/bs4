@@ -2,9 +2,9 @@
 
 declare var Object: any;
 export interface VFeventInterface {
-  id: number;
   starttime?: Date;
   endtime?: Date;
+  sumt?: number;
   year?: number;
   name?: string;
   isrented?: number;
@@ -25,12 +25,14 @@ export interface VFeventInterface {
   roomId?: number;
   isother?: number;
   locationId?: number;
+  lname: string;
+  id: number;
 }
 
 export class VFevent implements VFeventInterface {
-  id: number;
   starttime: Date;
   endtime: Date;
+  sumt: number;
   year: number;
   name: string;
   isrented: number;
@@ -51,6 +53,8 @@ export class VFevent implements VFeventInterface {
   roomId: number;
   isother: number;
   locationId: number;
+  lname: string;
+  id: number;
   constructor(data?: VFeventInterface) {
     Object.assign(this, data);
   }
@@ -82,10 +86,6 @@ export class VFevent implements VFeventInterface {
       name: 'VFevent',
       plural: 'VFevents',
       properties: {
-        id: {
-          name: 'id',
-          type: 'number'
-        },
         starttime: {
           name: 'starttime',
           type: 'Date'
@@ -93,6 +93,10 @@ export class VFevent implements VFeventInterface {
         endtime: {
           name: 'endtime',
           type: 'Date'
+        },
+        sumt: {
+          name: 'sumt',
+          type: 'number'
         },
         year: {
           name: 'year',
@@ -172,6 +176,14 @@ export class VFevent implements VFeventInterface {
         },
         locationId: {
           name: 'locationId',
+          type: 'number'
+        },
+        lname: {
+          name: 'lname',
+          type: 'string'
+        },
+        id: {
+          name: 'id',
           type: 'number'
         },
       },
