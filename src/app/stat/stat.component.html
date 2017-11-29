@@ -183,11 +183,11 @@
 										<span class="text-primary">{{p.plan}}</span>
 									</td>
 									<td *ngIf="p" style="text-align:center">
-										<span *ngIf="p.sumtime/mpu < p.plan" class="text-success">{{p.sumtime/mpu | number : '1.2-2'}}</span>
+										<span *ngIf="p.sumtime/mpu <= p.plan" class="text-success">{{p.sumtime/mpu | number : '1.2-2'}}</span>
 										<span *ngIf="p.sumtime/mpu > p.plan" class="text-danger">{{p.sumtime/mpu | number : '1.2-2'}}</span>
 									</td>
 									<td *ngIf="p" style="text-align:center">
-										<span *ngIf="p.sumtimeshort/mpu < p.plan" class="text-success">{{p.sumtimeshort/mpu | number : '1.2-2'}}</span>
+										<span *ngIf="p.sumtimeshort/mpu <= p.plan" class="text-success">{{p.sumtimeshort/mpu | number : '1.2-2'}}</span>
 										<span *ngIf="p.sumtimeshort/mpu > p.plan" class="text-danger">{{p.sumtimeshort/mpu | number : '1.2-2'}}</span>
 									</td>
 									<td *ngFor="let d of plangrid[j]; let k = index" style="text-align: center">
