@@ -110,6 +110,7 @@ import { VStatFullApi } from './services/custom/VStatFull';
 import { VStatFullExportApi } from './services/custom/VStatFullExport';
 import { VPersonExportApi } from './services/custom/VPersonExport';
 import { VFeventApi } from './services/custom/VFevent';
+import { TvrPersonApi } from './services/custom/TvrPerson';
 /**
 * @module SDKBrowserModule
 * @description
@@ -203,6 +204,7 @@ export class SDKBrowserModule {
         VStatFullExportApi,
         VPersonExportApi,
         VFeventApi,
+        TvrPersonApi,
         { provide: InternalStorage, useClass: CookieBrowser }
       ]
     };

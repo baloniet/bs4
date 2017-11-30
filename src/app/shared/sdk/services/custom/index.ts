@@ -66,5 +66,6 @@ export * from './VStatFull';
 export * from './VStatFullExport';
 export * from './VPersonExport';
 export * from './VFevent';
+export * from './TvrPerson';
 export * from './SDKModels';
 export * from './logger.service';
