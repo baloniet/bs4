@@ -28,11 +28,12 @@
 					<span class="text-success font-weight-bold">{{m.mnum}}</span> {{m.firstname}} {{m.lastname}}</td>
 				<td *ngFor="let d of m.events" style="text-align:center;">
 					<i *ngIf="d?.test" placement="top" ngbTooltip="{{formTitles?.ack}}" [class.text-muted]="!d.ack" [class.hidden-print]="!d.ack" [class.text-success]="d.ack"
-					    class="fa fa-user-circle clickable" aria-hidden="true" (click)="toggle(d,'ack')"></i>
+					    class="fa fa-user-circle clickable" aria-hidden="true" (click)="toggle(d,'ack', m)"></i>
 					<i *ngIf="d?.test" placement="bottom" ngbTooltip="{{formTitles?.off}}" [class.text-muted]="!d.off" [class.hidden-print]="!d.off" [class.text-danger]="d.off"
-					    class="fa fa-user-circle-o clickable" aria-hidden="true" (click)="toggle(d,'off')"> </i>
-					<i *ngIf="!d?.test" placement="bottom" ngbTooltip="{{formTitles?.add}}" class="fa fa-plus hidden-print text-success clickable" aria-hidden="true" (click)="toggle(d,'add',m)"> </i>
-					<i *ngIf="d?.test && !d.ack && !d.off" placement="bottom" ngbTooltip="{{formTitles?.remove}}" class="fa fa-minus hidden-print text-danger clickable" aria-hidden="true"
+					    class="fa fa-user-circle-o clickable" aria-hidden="true" (click)="toggle(d,'off', m)"> </i>
+					<i *ngIf="!d.test && showPlus" placement="bottom" ngbTooltip="{{formTitles?.add}}" 
+						class="fa fa-plus hidden-print text-success clickable" aria-hidden="true" (click)="toggle(d,'add',m)"> </i>
+					<i *ngIf="d?.test == 1 && !d.ack && !d.off" placement="bottom" ngbTooltip="{{formTitles?.remove}}" class="fa fa-minus hidden-print text-danger clickable" aria-hidden="true"
 					    (click)="toggle(d,'remove',m)"> </i>
 				</td>
 			</tr>

@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   title : 'development',
-  BASE_API_URL : 'http://localhost:3005'
+  //BASE_API_URL : 'http://localhost:3005'
   //BASE_API_URL : 'https://vgccrm.vgcgoriske.si:20030'
+  BASE_API_URL : 'http://193.2.173.83:20030'
 };

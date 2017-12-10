@@ -22,11 +22,12 @@ let moment = require('./../../../assets/js/moment.min.js');
 export class GridComponent extends BaseFormComponent implements OnInit {
 
   private actId;
-  private events;
+  events;
   private eids;
-  private members;
+  members = [];
   private membersids;
-  private act;
+  act;
+  showPlus;
   month;
   off = 0;
   private start;
@@ -63,7 +64,11 @@ export class GridComponent extends BaseFormComponent implements OnInit {
   }
 
   private prepareEvents() {
-
+    this.showPlus = false;
+    this.events = [];
+    for (let m of this.members) {
+      m.events = [];
+    }
 
     let date;
     date = moment().startOf('month');
@@ -87,9 +92,9 @@ export class GridComponent extends BaseFormComponent implements OnInit {
   }
 
   prepareMembers() {
+    this.showPlus = false;
     this._memberApi.find({ order: ['lastname', 'firstname'], where: { 'id': this.actId } })
       .subscribe(res => {
-
         this.members = [];
         this.membersids = res.map(r => r['personId']);
 
@@ -102,7 +107,6 @@ export class GridComponent extends BaseFormComponent implements OnInit {
             mnum: (<VAmember>m).mnum,
             events: this.eids.slice()
           });
-
         this._eApi.find({
           order: 'personId',
           where: { activityId: this.actId, personId: { inq: this.membersids }, starttime: { gt: new Date(this.start) }, endtime: { lt: new Date(this.end) } }
@@ -113,16 +117,19 @@ export class GridComponent extends BaseFormComponent implements OnInit {
               let member = this.members[this.membersids.indexOf(el.personId)];
               let evts = member.events;
               let index = evts.indexOf(el.id);
-              if (index > -1)
+              if (index > -1) {
                 evts[index] = { ack: e['padate'], off: e['podate'], test: 1, personId: el.personId, eventId: el.id, epersonId: el.epersonId };
+              };
+              this.showPlus = true;
             }
-
           }, this.errMethod);
       }, this.errMethod);
   }
 
   // toggle acknowledge and offcheck for person and specified event
-  toggle(d, type: string, m?) {
+  toggle(d, type: string, m) {
+
+    let eventId = m.events.indexOf(d);
     if (type === 'off') {
       if (d.off) {
         d.off = null;
@@ -131,13 +138,7 @@ export class GridComponent extends BaseFormComponent implements OnInit {
       if (d.ack) {
         d.ack = null;
       } else d.ack = moment().format();
-    } else if (type === 'add') {
-      let id = d;
-      d = { test: 1, ack: moment().format(), off: null, epersonId: 0, personId: m.personId, eventId: id };
-    } else if (type === 'remove') {
-      // intentionaly left blank
-    }
-
+    } 
 
     let ep = new EPerson;
     ep.personId = d.personId;
@@ -145,17 +146,27 @@ export class GridComponent extends BaseFormComponent implements OnInit {
     ep.adate = d.ack;
     ep.odate = d.off;
     ep.id = d.epersonId;
+
     if (type === 'remove') {
       this._epersApi.deleteById(d.epersonId)
-        .subscribe(null, this.errMethod, () => {
-          this.prepareMembers();
-        });
+        .subscribe(res => {
+          m.events[eventId] = d.eventId;
+        }, this.errMethod);
     } else {
+      if (type === 'add') {
+        ep.adate = moment().format();
+        ep.personId = m.personId;
+        ep.eventId = d;
+        ep.id = 0;
+      }
       this._epersApi.upsert(ep)
-        .subscribe(null, this.errMethod, () => {
-          if (type === 'add')
-            this.prepareMembers();
-        });
+        .subscribe(res => {
+          if (type === 'add'){
+            m.events[eventId] = {
+               test: 1, ack: (<EPerson>res).adate, off: null, epersonId: (<EPerson>res).id, personId: (<EPerson>res).personId, eventId: (<EPerson>res).eventId
+              };
+          }
+        }, this.errMethod);
     }
 
   }
