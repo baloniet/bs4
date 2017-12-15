@@ -67,5 +67,6 @@ export * from './VStatFullExport';
 export * from './VPersonExport';
 export * from './VFevent';
 export * from './TvrPerson';
+export * from './VPstat';
 export * from './BaseModels';
 

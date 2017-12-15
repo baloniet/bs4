@@ -68,6 +68,7 @@ import { VStatFullExport } from '../../models/VStatFullExport';
 import { VPersonExport } from '../../models/VPersonExport';
 import { VFevent } from '../../models/VFevent';
 import { TvrPerson } from '../../models/TvrPerson';
+import { VPstat } from '../../models/VPstat';
 
 @Injectable()
 export class SDKModels {
@@ -141,6 +142,7 @@ export class SDKModels {
     VPersonExport: VPersonExport,
     VFevent: VFevent,
     TvrPerson: TvrPerson,
+    VPstat: VPstat,
     
   };
 
