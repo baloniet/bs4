@@ -138,7 +138,7 @@
 							</div>
 							<table *ngIf="people" class="table-sm table-hover table">
 								<tr *ngFor="let p of people" class="text-primary">
-									<td *ngIf="p.personId" (click)="selectPerson(p);t.select('activity')">
+									<td *ngIf="p.personId">
 										<span class="text-success font-weight-bold">{{p.mnum}}</span> {{p.firstname}} {{p.lastname}}</td>
 									<td *ngIf="!p.personId" class="invisible">&nbsp;</td>
 									<td *ngIf="p.personId">
